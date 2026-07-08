@@ -3,9 +3,9 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "derald.com DotTalk++ Staging",
+  title: "dottalkpp.com DotTalk++ Documentation",
   description:
-    "Temporary derald.com staging surface for DotTalk++ manuals, generated references, and proof-oriented technical documentation."
+    "DotTalk++ documentation surface for manuals, generated references, and proof-oriented technical documentation."
 };
 
 const navItems = [

@@ -171,8 +171,8 @@ source/runtime truth
         <div>
           <h2>What This Site Handles</h2>
           <p>
-            This temporary `derald.com` staging surface is not a second marketing
-            site. It is the deeper technical library for DotTalk++ manuals,
+            `dottalkpp.com` is not a second marketing site. It is the deeper
+            technical library for DotTalk++ manuals,
             references, generated documentation, proof reports, and downloadable
             documentation bundles.
           </p>

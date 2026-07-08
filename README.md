@@ -1,10 +1,11 @@
 # DotTalk++ documentation staging site
 
-Local static-first staging site for DotTalk++ documentation work. The current
-working name is `derald.com` staging while the final `dottalkpp.com` repository
-and domain split is worked out.
+Local static-first staging site for DotTalk++ documentation work targeted at
+`dottalkpp.com`.
 
-This site temporarily holds the focused manual, reference, generated-documentation, and proof-library surface for DotTalk++ while the final `dottalkpp.com` repository/domain split is worked out.
+This site holds the focused manual, reference, generated-documentation, and
+proof-library surface for DotTalk++ while the final repository/domain split is
+worked out.
 
 It supports, but does not replace, `x64base.com`. The umbrella x64base site
 remains the ecosystem home for the database engine, product family, Laboratory
