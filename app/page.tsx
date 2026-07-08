@@ -98,8 +98,12 @@ const relationshipItems = [
     text: "Ecosystem home for the engine, product family, DBF_64/FPT64 specs, Laboratory Campus, project story, and selected evidence."
   },
   {
-    title: "DotTalk++ manual room",
+    title: "dottalkpp.com",
     text: "Focused technical library for manuals, command references, generated documentation, proof reports, and downloadable document bundles."
+  },
+  {
+    title: "derald.com",
+    text: "Document storage, retrieval, staging, and operator-facing organization for larger artifacts that should support publication without becoming product branding."
   },
   {
     title: "Source authority",

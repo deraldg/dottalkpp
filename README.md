@@ -13,6 +13,10 @@ Campus, project history, and selected public evidence. This site is the deeper
 manual room for DotTalk++ manuals, references, generated reports, proof labels,
 and documentation bundles.
 
+`derald.com` remains useful as a document storage/retrieval and staging surface:
+larger artifacts, operator-facing indexes, and retrieval workflows can live
+there while `dottalkpp.com` presents the reviewed public manual/reference face.
+
 ## Authority rules
 
 - Source/runtime evidence is upstream of this site.
