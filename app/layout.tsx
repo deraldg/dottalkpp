@@ -9,13 +9,12 @@ export const metadata: Metadata = {
 };
 
 const navItems = [
-  { href: "#manuals", label: "Manuals" },
-  { href: "#dotscript", label: "DotScript" },
-  { href: "#reference", label: "Reference" },
-  { href: "#generated", label: "Generated Docs" },
-  { href: "#relationship", label: "Relationship" },
-  { href: "#planned", label: "Planned Lanes" },
-  { href: "#developer", label: "Developer" }
+  { href: "/manuals", label: "Manuals" },
+  { href: "/dotscript", label: "DotScript" },
+  { href: "/reference", label: "Reference" },
+  { href: "/generated", label: "Generated Docs" },
+  { href: "/downloads", label: "Downloads" },
+  { href: "/governance", label: "Governance" }
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -28,9 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </Link>
           <nav aria-label="Primary">
             {navItems.map((item) => (
-              <a key={item.href} href={item.href}>
+              <Link key={item.href} href={item.href}>
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
         </header>

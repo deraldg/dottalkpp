@@ -30,6 +30,25 @@ design or staging material until source/runtime/manual evidence proves them.
   provenance-labeled.
 - `README.*` files are orientation and provenance artifacts; preserve prior
   versions before replacement.
+
+## Routes
+
+- `/manuals`
+- `/dotscript`
+- `/reference`
+- `/generated`
+- `/downloads`
+- `/governance`
+
+Shared navigation and section inventories live in `lib/site-data.ts` so the
+home page and route pages do not drift.
+
+## Accessibility and provenance
+
+Downloads should carry type, source, proof status, and accessibility status.
+Use current language: accessibility, inclusive design, and people with
+disabilities. Avoid euphemistic labels. Complex documents should have HTML or
+Markdown summaries when possible.
 - Domain ownership or WHOIS observations require project-owner verification
   before public claims.
 
