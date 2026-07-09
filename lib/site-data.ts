@@ -142,10 +142,13 @@ export const plannedItems = [
 
 export const downloadArtifacts = [
   {
-    title: "Manual bundle",
-    type: "manual draft",
-    source: "manualgen lane",
+    title: "DotTalk++ Reader Manual",
+    bucket: "Reader Manuals",
+    type: "manual snapshot",
+    source: "reviewed manualgen lane",
+    role: "Primary reader-facing manual bundle for DotTalk++ usage and concepts.",
     proofStatus: "review-needed",
+    reviewStatus: "staging",
     accessibility: {
       alt_text: "not-applicable",
       text_summary: "needed",
@@ -155,10 +158,29 @@ export const downloadArtifacts = [
     }
   },
   {
-    title: "Generated report packet",
-    type: "generated-but-unreviewed",
-    source: "SelfDoc / MDO reports",
+    title: "DotScript Language Guide",
+    bucket: "DotScript Guides",
+    type: "language guide",
+    source: "manualgen and DotScript examples",
+    role: "Guide for syntax, variables, comments, control flow, nesting, and mutation-safe scripting.",
+    proofStatus: "review-needed",
+    reviewStatus: "staging",
+    accessibility: {
+      alt_text: "not-applicable",
+      text_summary: "needed",
+      keyboard_path: "not-applicable",
+      contrast_review: "checked",
+      screen_reader_review: "needed"
+    }
+  },
+  {
+    title: "Command Reference Export",
+    bucket: "Command and Function References",
+    type: "reference export",
+    source: "HELP / CMDHELP / DOTREF / command contracts",
+    role: "Command catalog with syntax, mutator class, proof labels, aliases, and generated-reference status.",
     proofStatus: "source-evidenced",
+    reviewStatus: "review-needed",
     accessibility: {
       alt_text: "not-applicable",
       text_summary: "ready",
@@ -168,10 +190,45 @@ export const downloadArtifacts = [
     }
   },
   {
-    title: "Proof packet",
+    title: "Function Reference Export",
+    bucket: "Command and Function References",
+    type: "reference export",
+    source: "function catalog and expression evaluator docs",
+    role: "Scalar and expression function catalog with evidence labels and status.",
+    proofStatus: "source-evidenced",
+    reviewStatus: "review-needed",
+    accessibility: {
+      alt_text: "not-applicable",
+      text_summary: "ready",
+      keyboard_path: "not-applicable",
+      contrast_review: "checked",
+      screen_reader_review: "needed"
+    }
+  },
+  {
+    title: "SelfDoc / MDO Report Packet",
+    bucket: "Generated SelfDoc / MDO Reports",
+    type: "generated report packet",
+    source: "SelfDoc / MDO reports",
+    role: "Generated evidence shelves for comments, contracts, metadata, command surfaces, and publication decisions.",
+    proofStatus: "source-evidenced",
+    reviewStatus: "generated-review-needed",
+    accessibility: {
+      alt_text: "not-applicable",
+      text_summary: "ready",
+      keyboard_path: "not-applicable",
+      contrast_review: "checked",
+      screen_reader_review: "needed"
+    }
+  },
+  {
+    title: "Runtime Proof Packet",
+    bucket: "Proof Packets",
     type: "proof packet",
     source: "runtime transcripts and canaries",
+    role: "Runtime transcripts, canary output, CMDHELPCHK readbacks, and proof indexes.",
     proofStatus: "runtime-evidenced",
+    reviewStatus: "review-needed",
     accessibility: {
       alt_text: "needed",
       text_summary: "ready",
@@ -179,6 +236,73 @@ export const downloadArtifacts = [
       contrast_review: "checked",
       screen_reader_review: "needed"
     }
+  },
+  {
+    title: "Accessible Text Versions",
+    bucket: "Accessibility Text Versions",
+    type: "accessibility companion",
+    source: "reviewed manual and diagram summaries",
+    role: "HTML/Markdown alternatives for large PDFs, diagrams, decks, and visual proof packets.",
+    proofStatus: "derived-from-reviewed-artifacts",
+    reviewStatus: "planned",
+    accessibility: {
+      alt_text: "ready",
+      text_summary: "ready",
+      keyboard_path: "checked",
+      contrast_review: "checked",
+      screen_reader_review: "needed"
+    }
+  },
+  {
+    title: "Historical Manual Snapshot",
+    bucket: "Historical / Archived Snapshots",
+    type: "archive snapshot",
+    source: "versioned manual archive",
+    role: "Preserved manual or documentation snapshot retained for provenance and comparison.",
+    proofStatus: "historical",
+    reviewStatus: "archive",
+    accessibility: {
+      alt_text: "not-applicable",
+      text_summary: "needed",
+      keyboard_path: "not-applicable",
+      contrast_review: "needed",
+      screen_reader_review: "needed"
+    }
+  }
+];
+
+export const downloadBuckets = [
+  {
+    title: "Reader Manuals",
+    text: "Primary manuals intended for readers learning DotTalk++ and x64base command-surface concepts."
+  },
+  {
+    title: "Developer Manuals",
+    text: "Contributor, coding-standard, contract, SelfDoc, MDO, and manualgen materials for maintainers."
+  },
+  {
+    title: "DotScript Guides",
+    text: "Language guides, examples, smoke scripts, and syntax references for repeatable work."
+  },
+  {
+    title: "Command and Function References",
+    text: "Generated and reviewed catalogs for commands, functions, mutators, SET families, and HELP surfaces."
+  },
+  {
+    title: "Generated SelfDoc / MDO Reports",
+    text: "Generated evidence shelves and curation reports that become public only after review."
+  },
+  {
+    title: "Proof Packets",
+    text: "Runtime transcripts, canaries, readbacks, screenshots, and evidence bundles."
+  },
+  {
+    title: "Accessibility Text Versions",
+    text: "Text-first alternatives and summaries for diagrams, decks, PDFs, and other visual documents."
+  },
+  {
+    title: "Historical / Archived Snapshots",
+    text: "Versioned manual and reference snapshots preserved for provenance."
   }
 ];
 

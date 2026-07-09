@@ -416,7 +416,7 @@ pre {
 
 .artifact-row {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr 1fr 0.9fr 1.5fr;
+  grid-template-columns: 1.25fr 0.9fr 0.8fr 1fr 0.8fr 0.85fr 1.6fr;
   gap: 1px;
   background: var(--line);
 }
@@ -432,6 +432,18 @@ pre {
 .artifact-row span:first-child {
   color: var(--ink);
   font-weight: 800;
+}
+
+.artifact-row strong,
+.artifact-row small {
+  display: block;
+}
+
+.artifact-row small {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
 }
 
 .artifact-head span {
