@@ -14,6 +14,7 @@ const navItems = [
   { href: "#reference", label: "Reference" },
   { href: "#generated", label: "Generated Docs" },
   { href: "#relationship", label: "Relationship" },
+  { href: "#planned", label: "Planned Lanes" },
   { href: "#developer", label: "Developer" }
 ];
 

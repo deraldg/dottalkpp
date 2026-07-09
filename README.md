@@ -17,6 +17,10 @@ and documentation bundles.
 larger artifacts, operator-facing indexes, and retrieval workflows can live
 there while `dottalkpp.com` presents the reviewed public manual/reference face.
 
+The site may expose planned lanes such as PRONOUNS semantic field hooks, custom
+field behaviors, and domain split notes, but those sections must stay labeled as
+design or staging material until source/runtime/manual evidence proves them.
+
 ## Authority rules
 
 - Source/runtime evidence is upstream of this site.
@@ -26,6 +30,8 @@ there while `dottalkpp.com` presents the reviewed public manual/reference face.
   provenance-labeled.
 - `README.*` files are orientation and provenance artifacts; preserve prior
   versions before replacement.
+- Domain ownership or WHOIS observations require project-owner verification
+  before public claims.
 
 ## Local commands
 

@@ -52,6 +52,7 @@ const referenceItems = [
   "Relations",
   "Indexing",
   "Memos",
+  "Semantic field hooks",
   "DDL",
   "Import/export",
   "External app commands",
@@ -89,7 +90,8 @@ const developerItems = [
   "Public-content guard",
   "Artifact policy",
   "Manual release policy",
-  "README preservation"
+  "README preservation",
+  "Planned lanes must stay labeled"
 ];
 
 const relationshipItems = [
@@ -115,7 +117,23 @@ const gateItems = [
   "Implementation evidence -> reviewed manuals -> website summaries",
   "Manual sections may feed this site after review and proof labeling",
   "Website prose must not become manual truth unless the artifact is website-owned and non-derivable",
-  "README.* files are preserved as orientation and provenance artifacts"
+  "README.* files are preserved as orientation and provenance artifacts",
+  "Domain ownership or WHOIS observations require owner verification before public claims"
+];
+
+const plannedItems = [
+  {
+    title: "PRONOUNS semantic field hook",
+    text: "Design lane for character-backed semantic metadata, validation, normalization, and optional SEX relationship rules. Not a current runtime claim."
+  },
+  {
+    title: "Custom field behaviors",
+    text: "Future handlers should resolve through metadata/DDICT/FIELDMGR and prove behavior across REPLACE, MULTIREP, CALCWRITE, buffering, import/export, FIELDS, STRUCT, and SelfDoc."
+  },
+  {
+    title: "Domain split",
+    text: "dottalkpp.com is the intended reviewed public manual/reference face; derald.com can remain staging, storage, and retrieval support. dottalk.com should only be discussed publicly after owner verification."
+  }
 ];
 
 export default function HomePage() {
@@ -333,6 +351,24 @@ ENDIF`}</pre>
         <div className="gate-list">
           {gateItems.map((item) => (
             <div key={item}>{item}</div>
+          ))}
+        </div>
+      </section>
+
+      <section className="section" id="planned">
+        <div className="section-heading">
+          <FileText aria-hidden="true" />
+          <div>
+            <p className="eyebrow">Planned Lanes</p>
+            <h2>Design Work That Must Stay Labeled</h2>
+          </div>
+        </div>
+        <div className="card-grid relationship-grid">
+          {plannedItems.map((item) => (
+            <article className="info-card" key={item.title}>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </article>
           ))}
         </div>
       </section>
