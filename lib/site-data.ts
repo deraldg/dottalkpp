@@ -123,6 +123,10 @@ export const gateItems = [
 
 export const plannedItems = [
   {
+    title: "When the world changes your schema",
+    text: "Student lesson using Y2K, the Euro, ERP modernization, and PRONOUNS semantic fields to ask whether a system can adapt safely before it is replaced."
+  },
+  {
     title: "PRONOUNS semantic field hook",
     text: "Design lane for character-backed semantic metadata, validation, normalization, and optional SEX relationship rules. Not a current runtime claim."
   },
