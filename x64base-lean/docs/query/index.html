@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Query and relations — x64base</title>
+<meta name="description" content="Two walkers over one declared graph, and a SELECT that answers to an external referee.">
+<meta property="og:title" content="Query and relations — x64base">
+<meta property="og:description" content="Two walkers over one declared graph, and a SELECT that answers to an external referee.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap bar">
+    <a class="mark" href="../../"><span class="dot"></span>x64base</a>
+    <nav class="top"><a href="../../about/" class="">About</a><a href="../../docs/" class="on">Documentation</a><a href="../../status/" class="">Status</a><a href="../../downloads/" class="">Downloads</a><a href="../../schemas/" class="">Schemas</a><a href="../../contact/" class="">Contact</a></nav>
+  </div>
+</header>
+<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-11</div></div>
+<main>
+
+<div class="phead"><div class="wrap">
+  <p class="crumb"><a href="../">Documentation</a> / Query and relations</p>
+  <h1>Query and relations</h1>
+  <p>Two walkers over one declared graph, and a SELECT that answers to an external referee.</p>
+</div></div>
+<section><div class="wrap prose">
+<h2>One graph, two consumers</h2>
+<p><span class="chip t-proven">Runtime-proven</span> A declared relation graph can be walked two entirely different ways. Positional traversal moves
+the child cursor as the parent moves — the classic behavior. The house SELECT returns qualifying rows
+as a set. On 2026-08-10 both walkers answered the same question over a 34-table schema with 58
+foreign-key relations and agreed down to the record.</p>
+<h2>The oracle</h2>
+<p><span class="chip t-proven">Runtime-proven</span> Every shipped operator of the house SELECT — selection, projection, <code>ORDER BY</code>,
+<code>LIMIT</code>, <code>COUNT(*)</code> — is verified against an in-process SQLite implementation.
+SQLite is compiled in both as a companion carrier and as the referee. Competing with it and testing
+against it are the same decision, made on purpose.</p>
+<p><span class="chip t-chartered">Chartered</span> Joins are a later operator. The set algebra is being built one operator at a time, and each one
+arrives with its oracle check or it does not arrive.</p>
+<h2>A whole database posture in one file</h2>
+<p><span class="chip t-proven">Runtime-proven</span> One command captures open work areas, attached indexes, selected tag orders, aliases, and
+declared relations into a plain-text snapshot. One command restores all of it. The standing
+demonstration brings back 43 work areas and 58 relations — an entire posed schema — from a single
+committed file.</p>
+</div></section>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="mark" style="margin-bottom:12px"><span class="dot"></span>x64base</div>
+        <p class="tag">A 64-bit DBF database engine in C++20, with a command shell you can watch work. Born 1993, rebuilt for 2026.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <a href="../../docs/">Documentation</a>
+        <a href="../../status/">Status</a>
+        <a href="../../downloads/">Downloads</a>
+        <a href="../../schemas/">Schemas</a>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <a href="https://github.com/deraldg/x64base">Source on GitHub</a>
+        <a href="https://x64base.com">Working archive</a>
+        <a href="../../about/">About &amp; scope</a>
+        <a href="../../contact/">Contact</a>
+      </div>
+    </div>
+    <div class="fine">
+      <span>© 1993–2026 Derald R. Grimwood Jr.</span>
+      <span>GPL-3.0-only</span>
+      <span>DBF_64 · FPT64 · indexing · teaching-first</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

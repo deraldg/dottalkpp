@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Indexing — x64base</title>
+<meta name="description" content="An index family, not an index — and a policy for mixing generations.">
+<meta property="og:title" content="Indexing — x64base">
+<meta property="og:description" content="An index family, not an index — and a policy for mixing generations.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap bar">
+    <a class="mark" href="../../"><span class="dot"></span>x64base</a>
+    <nav class="top"><a href="../../about/" class="">About</a><a href="../../docs/" class="on">Documentation</a><a href="../../status/" class="">Status</a><a href="../../downloads/" class="">Downloads</a><a href="../../schemas/" class="">Schemas</a><a href="../../contact/" class="">Contact</a></nav>
+  </div>
+</header>
+<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-11</div></div>
+<main>
+
+<div class="phead"><div class="wrap">
+  <p class="crumb"><a href="../">Documentation</a> / Indexing</p>
+  <h1>Indexing</h1>
+  <p>An index family, not an index — and a policy for mixing generations.</p>
+</div></div>
+<section><div class="wrap prose">
+<p>x64base carries several index containers rather than one, and publishes the attach, rebuild, order,
+seek, and verification seams as architecture instead of sealed internals.</p>
+<table class="t">
+<tr><th>Container</th><th>Generation</th><th>Status</th></tr>
+<tr><td><code>INX</code></td><td>Classic</td><td><span class="chip t-proven">Runtime-proven</span></td></tr>
+<tr><td><code>CNX</code></td><td>Classic</td><td><span class="chip t-proven">Runtime-proven</span></td></tr>
+<tr><td><code>CDX</code> with an LMDB key store</td><td>x64</td><td><span class="chip t-proven">Runtime-proven</span></td></tr>
+</table>
+<h2>Cross-generation attachment is policy</h2>
+<p><span class="chip t-proven">Runtime-proven</span> A classic <code>CNX</code> may be explicitly attached to an x64 table, with an advisory. Rebuild
+routing follows correctly and the <code>CDX</code> default is unchanged. This is a decision the engine
+makes deliberately, not an accident of permissiveness.</p>
+<p><span class="chip t-chartered">Chartered</span> The mirror direction — <code>CDX</code> on a classic table — is registered and awaiting its
+proof. It is not claimed until a regression shows it.</p>
+<h2>Indexes in memory</h2>
+<p><span class="chip t-proven">Runtime-proven</span> The in-process virtual disk hosts complete x64 tables <em>and their native CDX indexes</em> with
+zero files on disk: created, indexed, read back in order, and torn down entirely in RAM.</p>
+</div></section>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="mark" style="margin-bottom:12px"><span class="dot"></span>x64base</div>
+        <p class="tag">A 64-bit DBF database engine in C++20, with a command shell you can watch work. Born 1993, rebuilt for 2026.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <a href="../../docs/">Documentation</a>
+        <a href="../../status/">Status</a>
+        <a href="../../downloads/">Downloads</a>
+        <a href="../../schemas/">Schemas</a>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <a href="https://github.com/deraldg/x64base">Source on GitHub</a>
+        <a href="https://x64base.com">Working archive</a>
+        <a href="../../about/">About &amp; scope</a>
+        <a href="../../contact/">Contact</a>
+      </div>
+    </div>
+    <div class="fine">
+      <span>© 1993–2026 Derald R. Grimwood Jr.</span>
+      <span>GPL-3.0-only</span>
+      <span>DBF_64 · FPT64 · indexing · teaching-first</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Storage formats — x64base</title>
+<meta name="description" content="DBF_64 and FPT64 — what widened, what did not, and where the gates still are.">
+<meta property="og:title" content="Storage formats — x64base">
+<meta property="og:description" content="DBF_64 and FPT64 — what widened, what did not, and where the gates still are.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap bar">
+    <a class="mark" href="../../"><span class="dot"></span>x64base</a>
+    <nav class="top"><a href="../../about/" class="">About</a><a href="../../docs/" class="on">Documentation</a><a href="../../status/" class="">Status</a><a href="../../downloads/" class="">Downloads</a><a href="../../schemas/" class="">Schemas</a><a href="../../contact/" class="">Contact</a></nav>
+  </div>
+</header>
+<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-11</div></div>
+<main>
+
+<div class="phead"><div class="wrap">
+  <p class="crumb"><a href="../">Documentation</a> / Storage formats</p>
+  <h1>Storage formats</h1>
+  <p>DBF_64 and FPT64 — what widened, what did not, and where the gates still are.</p>
+</div></div>
+<section><div class="wrap prose">
+<h2>Three flavors, one runtime</h2>
+<p><span class="chip t-proven">Runtime-proven</span> The same binary opens classic MS-DOS-era DBF, Visual FoxPro DBF, and the x64 <code>DBF_64</code>
+format. Flavor is a property of the table on disk, not a compile-time choice. The teaching datasets
+ship in all three plus a reference copy, so a lesson can put them side by side.</p>
+<h2>What x64 actually widened</h2>
+<ul class="plain">
+<li>Table headers carry 64-bit record-count and geometry fields</li>
+<li>Memos use 64-bit object identifiers and offsets</li>
+<li>Metadata supports richer table and field names, with classic descriptor fallback tokens preserved</li>
+</ul>
+<div class="note"><p><strong>What has not been widened yet.</strong> Some shared runtime paths still
+carry compatibility gates that must be audited one at a time, and each index backend needs its own
+audit for true 64-bit record payloads and offsets. x64base does not claim every command path is
+unlimited. <span class="chip t-source">Source-evidenced</span></p></div>
+<h2>Memos</h2>
+<p><span class="chip t-source">Source-evidenced</span> Memo storage is payload-agnostic by design: the memo layer addresses objects by 64-bit
+identifier and does not inspect what they contain. The interesting destination built on that — a memo
+field carrying an entire small database as a teaching payload — is <span class="chip t-chartered">Chartered</span> and stated at exactly that
+tier: designed, not run.</p>
+</div></section>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="mark" style="margin-bottom:12px"><span class="dot"></span>x64base</div>
+        <p class="tag">A 64-bit DBF database engine in C++20, with a command shell you can watch work. Born 1993, rebuilt for 2026.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <a href="../../docs/">Documentation</a>
+        <a href="../../status/">Status</a>
+        <a href="../../downloads/">Downloads</a>
+        <a href="../../schemas/">Schemas</a>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <a href="https://github.com/deraldg/x64base">Source on GitHub</a>
+        <a href="https://x64base.com">Working archive</a>
+        <a href="../../about/">About &amp; scope</a>
+        <a href="../../contact/">Contact</a>
+      </div>
+    </div>
+    <div class="fine">
+      <span>© 1993–2026 Derald R. Grimwood Jr.</span>
+      <span>GPL-3.0-only</span>
+      <span>DBF_64 · FPT64 · indexing · teaching-first</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

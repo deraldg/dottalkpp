@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>x64base — a 64-bit DBF engine in C++20</title>
+<meta name="description" content="A 64-bit DBF database engine in C++20 with an inspectable command shell. Active beta; every claim carries its evidence tier.">
+<meta property="og:title" content="x64base — a 64-bit DBF engine in C++20">
+<meta property="og:description" content="A 64-bit DBF database engine in C++20 with an inspectable command shell. Active beta; every claim carries its evidence tier.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="./assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap bar">
+    <a class="mark" href="./"><span class="dot"></span>x64base</a>
+    <nav class="top"><a href="./about/" class="">About</a><a href="./docs/" class="">Documentation</a><a href="./status/" class="">Status</a><a href="./downloads/" class="">Downloads</a><a href="./schemas/" class="">Schemas</a><a href="./contact/" class="">Contact</a></nav>
+  </div>
+</header>
+<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-11</div></div>
+<main>
+
+<section class="hero"><div class="wrap">
+  <p class="eyebrow">C++20 · DBF family · active beta</p>
+  <h1>A 64-bit DBF database engine you can watch work.</h1>
+  <p class="lead">x64base opens classic, Visual FoxPro, and 64-bit DBF tables; indexes them, relates them,
+  and queries them — while showing you every layer it touches. The shell is the engine's front door,
+  and nothing important happens where you cannot see it.</p>
+  <div class="btns">
+    <a class="btn" href="downloads/">Build it</a>
+    <a class="btn ghost" href="status/">See exactly where it stands</a>
+  </div>
+  <div class="motif"></div>
+  <div class="stats">
+    <div class="stat"><b>13</b><span>runtime-proven capabilities</span></div>
+    <div class="stat"><b>3</b><span>DBF flavors, one binary</span></div>
+    <div class="stat"><b>58</b><span>relations restored from one file</span></div>
+    <div class="stat"><b>1993</b><span>lineage start</span></div>
+  </div>
+</div></section>
+
+<hr>
+
+<section><div class="wrap">
+  <div class="sechead"><h2>What it does well</h2><p class="eyebrow">each with a transcript behind it</p></div>
+  <div class="grid g2"><div class="card"><div style="margin-bottom:9px"><span class="chip t-proven">Runtime-proven</span></div><h3>Three DBF flavors, one binary</h3><p>Classic, Visual FoxPro, and 64-bit tables open in the same runtime. Flavor belongs to the table, not the build.</p></div><div class="card"><div style="margin-bottom:9px"><span class="chip t-proven">Runtime-proven</span></div><h3>A SELECT with an external referee</h3><p>Every shipped operator of the house SELECT is checked against an in-process SQLite implementation. The competition is the test harness.</p></div><div class="card"><div style="margin-bottom:9px"><span class="chip t-proven">Runtime-proven</span></div><h3>Tables and indexes entirely in RAM</h3><p>A virtual disk builds, indexes, traverses, and tears down complete tables with zero files touched.</p></div><div class="card"><div style="margin-bottom:9px"><span class="chip t-proven">Runtime-proven</span></div><h3>A database posture in one file</h3><p>One command restores 43 work areas, their indexes, orders, aliases, and 58 declared relations from a plain-text snapshot.</p></div></div>
+</div></section>
+
+<section class="tight"><div class="wrap">
+  <div class="note prose">
+    <p><strong>Every claim on this site carries a tier.</strong> Runtime-proven means a regression or
+    transcript shows it. Source-evidenced means the mechanism is in the code but the end-to-end run
+    has not happened. Chartered means designed, not built. Nothing here outranks its proof, and the
+    <a href="status/">status board</a> lists the unfinished parts beside the finished ones.</p>
+  </div>
+</div></section>
+
+<hr>
+
+<section><div class="wrap">
+  <div class="sechead"><h2>The command surface</h2><p class="eyebrow">one shell, grouped by job</p></div>
+  <div class="grid g3"><div class="card"><h3>Tables and work areas</h3><p class="cmds">USE SELECT AREA DBAREA DBAREAS STRUCT FIELDS</p><p>Open a table into a numbered area, inspect its structure, and move between areas.</p></div><div class="card"><h3>Navigation</h3><p class="cmds">TOP BOTTOM SKIP GOTO RECNO SEEK FIND LOCATE</p><p>Move the cursor by position, by key, or by condition.</p></div><div class="card"><h3>Order and scope</h3><p class="cmds">SET INDEX / ORDER / FILTER / RELATION / TABLE BUFFER</p><p>Choose which index drives the order, restrict what is visible, and declare how tables relate.</p></div><div class="card"><h3>Mutation</h3><p class="cmds">REPLACE CALC CALCWRITE MULTIREP COMMIT ROLLBACK</p><p>Change field values under buffering, then commit or discard.</p></div><div class="card"><h3>Relations and rows</h3><p class="cmds">REL RELATIONS ERSATZ TUPLE TUPEXPORT</p><p>Walk a declared relation graph, project rows, and export them.</p></div><div class="card"><h3>Listing and browsing</h3><p class="cmds">LIST SMARTLIST SMARTBROWSE SB SIMPLEBROWSE</p><p>Read records at the terminal, from a one-line dump to a full browser.</p></div></div>
+  <p style="margin-top:18px"><a href="docs/command-families/">All eleven command families →</a></p>
+</div></section>
+
+<hr>
+
+<section><div class="wrap prose">
+  <div class="sechead"><h2>Who it is for</h2></div>
+  <p>Two audiences, and no others. <strong>Developers</strong> who work with DBF-family data and want an
+  engine whose internals are legible rather than sealed. <strong>Educators</strong> who want to teach
+  database fundamentals on a system where indexes, memos, work areas, and relations are visible
+  moving parts instead of diagrams.</p>
+  <p>It is not for sale, not a hosted service, and not a student portal. It is not a finished commercial
+  DBMS, a Visual FoxPro clone, or a drop-in replacement for Harbour or Xbase++. What it is, precisely,
+  is on the <a href="about/">About</a> page.</p>
+  <p style="color:var(--muted);font-size:.93rem;margin-top:26px">Looking for design notes, historical
+  source inventories, or the day-to-day development record? Those live in the
+  <a href="https://x64base.com">working archive</a>, which is kept for the project's own use and is
+  considerably less tidy than this.</p>
+</div></section>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="mark" style="margin-bottom:12px"><span class="dot"></span>x64base</div>
+        <p class="tag">A 64-bit DBF database engine in C++20, with a command shell you can watch work. Born 1993, rebuilt for 2026.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <a href="./docs/">Documentation</a>
+        <a href="./status/">Status</a>
+        <a href="./downloads/">Downloads</a>
+        <a href="./schemas/">Schemas</a>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <a href="https://github.com/deraldg/x64base">Source on GitHub</a>
+        <a href="https://x64base.com">Working archive</a>
+        <a href="./about/">About &amp; scope</a>
+        <a href="./contact/">Contact</a>
+      </div>
+    </div>
+    <div class="fine">
+      <span>© 1993–2026 Derald R. Grimwood Jr.</span>
+      <span>GPL-3.0-only</span>
+      <span>DBF_64 · FPT64 · indexing · teaching-first</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

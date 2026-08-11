@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Getting started — x64base</title>
+<meta name="description" content="Build the engine, open a table, and get an ordered read back.">
+<meta property="og:title" content="Getting started — x64base">
+<meta property="og:description" content="Build the engine, open a table, and get an ordered read back.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap bar">
+    <a class="mark" href="../../"><span class="dot"></span>x64base</a>
+    <nav class="top"><a href="../../about/" class="">About</a><a href="../../docs/" class="on">Documentation</a><a href="../../status/" class="">Status</a><a href="../../downloads/" class="">Downloads</a><a href="../../schemas/" class="">Schemas</a><a href="../../contact/" class="">Contact</a></nav>
+  </div>
+</header>
+<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-11</div></div>
+<main>
+
+<div class="phead"><div class="wrap">
+  <p class="crumb"><a href="../">Documentation</a> / Getting started</p>
+  <h1>Getting started</h1>
+  <p>Build the engine, open a table, and get an ordered read back.</p>
+</div></div>
+<section><div class="wrap prose">
+<h2>Requirements</h2>
+<ul class="plain">
+<li>A C++20 compiler — MSVC on Windows, or GCC/Clang on Linux and WSL</li>
+<li>CMake 3.21 or newer</li>
+<li>vcpkg, for dependency resolution (manifest is committed)</li>
+</ul>
+<h2>Build</h2>
+<pre>git clone https://github.com/deraldg/x64base
+cd x64base
+cmake --preset default
+cmake --build --preset default</pre>
+<p>The result is a single command host. The engine libraries link into it; there is no separate
+daemon or service to start.</p>
+<div class="note"><p><strong>Honest status:</strong> the build has been exercised on Windows/MSVC and
+WSL/Ubuntu, but a verified clean-machine recipe is not yet published, and no tagged release exists.
+Both are tracked as <em>not started</em> on the <a href="../../status/">status board</a>. If the build
+fights you, that is a documentation defect and worth reporting.</p></div>
+<h2>First session</h2>
+<pre>USE customers
+STRUCT
+SET ORDER TO custname
+TOP
+LIST NEXT 10
+</pre>
+<p>Open a table into a work area, look at its structure, choose the index that drives the order,
+go to the first record in that order, and read ten rows. Every one of those is a separate,
+observable step — which is the entire point of the shell.</p>
+<h2>Then try the interesting part</h2>
+<pre>WORKSPACE LOAD cascade_all
+RELATIONS
+SQL SELECT custname, ordertotal FROM orders ORDER BY ordertotal LIMIT 20
+</pre>
+<p>The first command restores an entire posed database — open areas, attached indexes, selected orders,
+aliases, and declared relations — from one plain-text file. The third answers a question over that
+graph using the house SELECT, whose operators are each verified against SQLite.</p>
+</div></section>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="mark" style="margin-bottom:12px"><span class="dot"></span>x64base</div>
+        <p class="tag">A 64-bit DBF database engine in C++20, with a command shell you can watch work. Born 1993, rebuilt for 2026.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <a href="../../docs/">Documentation</a>
+        <a href="../../status/">Status</a>
+        <a href="../../downloads/">Downloads</a>
+        <a href="../../schemas/">Schemas</a>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <a href="https://github.com/deraldg/x64base">Source on GitHub</a>
+        <a href="https://x64base.com">Working archive</a>
+        <a href="../../about/">About &amp; scope</a>
+        <a href="../../contact/">Contact</a>
+      </div>
+    </div>
+    <div class="fine">
+      <span>© 1993–2026 Derald R. Grimwood Jr.</span>
+      <span>GPL-3.0-only</span>
+      <span>DBF_64 · FPT64 · indexing · teaching-first</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

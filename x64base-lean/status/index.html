@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Status — x64base</title>
+<meta name="description" content="Every area of x64base against its evidence tier, including the work that has not started.">
+<meta property="og:title" content="Status — x64base">
+<meta property="og:description" content="Every area of x64base against its evidence tier, including the work that has not started.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap bar">
+    <a class="mark" href="../"><span class="dot"></span>x64base</a>
+    <nav class="top"><a href="../about/" class="">About</a><a href="../docs/" class="">Documentation</a><a href="../status/" class="on">Status</a><a href="../downloads/" class="">Downloads</a><a href="../schemas/" class="">Schemas</a><a href="../contact/" class="">Contact</a></nav>
+  </div>
+</header>
+<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-11</div></div>
+<main>
+
+<div class="phead"><div class="wrap">
+  <p class="crumb">Home / Status</p>
+  <h1>Where every part actually stands.</h1>
+  <p>Each area of x64base grows at its own rate, and this is the only page where those rates live.
+  Entries are promoted when their evidence exists and demoted the day it stops holding. Work that has
+  not started is listed too — an absence you cannot see is a claim by omission.</p>
+</div></div>
+
+<section><div class="wrap">
+  <div class="stats" style="margin:0 0 30px">
+    <div class="stat"><b>13</b><span>runtime-proven</span></div>
+    <div class="stat"><b>5</b><span>source-evidenced</span></div>
+    <div class="stat"><b>8</b><span>active beta</span></div>
+    <div class="stat"><b>5</b><span>chartered</span></div>
+    <div class="stat"><b>1</b><span>not started</span></div>
+  </div>
+  <div class="filters"><button data-f="all" aria-pressed="true">Everything (32)</button><button data-f="proven" aria-pressed="false">Runtime-proven (13)</button><button data-f="source" aria-pressed="false">Source-evidenced (5)</button><button data-f="beta" aria-pressed="false">Active beta (8)</button><button data-f="chartered" aria-pressed="false">Chartered (5)</button><button data-f="open" aria-pressed="false">Not started (1)</button></div>
+  <div class="board"><div class="grp"><h3>Storage</h3></div><div class="row" data-tier="proven"><div><h4>Three DBF flavors, one binary</h4><p>Classic x32 DBF, Visual FoxPro DBF, and the x64 DBF_64 format all open in the same runtime. Flavor is a property of the table, not of the build.</p><p class="ev"><b>Evidence:</b> REGRESSION RUN INDEX_X32 / INDEX_X64; teaching datasets in all three formats</p></div><div class="tier"><span class="chip t-proven">Runtime-proven</span></div></div><div class="row" data-tier="source"><div><h4>64-bit table headers and geometry</h4><p>x64 headers carry 64-bit record-count and geometry fields. Some shared runtime paths still have compatibility gates to audit and widen.</p><p class="ev"><b>Evidence:</b> DBF_64 reference; capacity matrix</p></div><div class="tier"><span class="chip t-source">Source-evidenced</span></div></div><div class="row" data-tier="source"><div><h4>Payload-agnostic memos</h4><p>x64 memos are addressed by 64-bit object identifiers and do not inspect what they store.</p><p class="ev"><b>Evidence:</b> src/memo/memo_ref.cpp</p></div><div class="tier"><span class="chip t-source">Source-evidenced</span></div></div><div class="row" data-tier="chartered"><div><h4>Memo-resident mini-databases</h4><p>A memo field carrying an entire small database as a teaching payload. Designed on top of the memo layer, not yet run.</p><p class="ev"><b>Evidence:</b> Virtual-workspaces design package, 2026-07-28</p></div><div class="tier"><span class="chip t-chartered">Chartered</span></div></div><div class="grp"><h3>Indexing</h3></div><div class="row" data-tier="proven"><div><h4>CDX with an LMDB-backed key store</h4><p>The x64-generation index. Attach, rebuild, order, and seek are published seams rather than sealed internals.</p><p class="ev"><b>Evidence:</b> Index regressions; CDX / LMDB reference</p></div><div class="tier"><span class="chip t-proven">Runtime-proven</span></div></div><div class="row" data-tier="proven"><div><h4>INX and CNX classic-generation indexes</h4><p>The classic index containers, with flavor-correct ordering behavior.</p><p class="ev"><b>Evidence:</b> REGRESSION RUN INDEX_X32</p></div><div class="tier"><span class="chip t-proven">Runtime-proven</span></div></div><div class="row" data-tier="proven"><div><h4>CNX attached to an x64 table</h4><p>Cross-generation attachment is policy, not accident: permitted with an advisory, with REINDEX routing correctly and the CDX default unchanged.</p><p class="ev"><b>Evidence:</b> REGRESSION RUN INDEX_X64_CNX</p></div><div class="tier"><span class="chip t-proven">Runtime-proven</span></div></div><div class="row" data-tier="chartered"><div><h4>CDX attached to a classic table</h4><p>The mirror direction. Registered, awaiting its proof.</p><p class="ev"><b>Evidence:</b> —</p></div><div class="tier"><span class="chip t-chartered">Chartered</span></div></div><div class="grp"><h3>Memory</h3></div><div class="row" data-tier="proven"><div><h4>Whole tables and indexes in RAM</h4><p>An in-process virtual disk hosts complete x64 tables and their native CDX indexes with zero files on disk: built, indexed, traversed in order, then torn down.</p><p class="ev"><b>Evidence:</b> REGRESSION RUN MEM; residency checkpoints in transcript</p></div><div class="tier"><span class="chip t-proven">Runtime-proven</span></div></div><div class="grp"><h3>Relations</h3></div><div class="row" data-tier="proven"><div><h4>Positional relation traversal</h4><p>Classic SET RELATION navigation, where the parent cursor drives the child, over a declared relation graph.</p><p class="ev"><b>Evidence:</b> REGRESSION RUN CASCADE_ENV</p></div><div class="tier"><span class="chip t-proven">Runtime-proven</span></div></div><div class="row" data-tier="proven"><div><h4>Set-oriented SELECT over the same graph</h4><p>The house SELECT answers the same question as the positional walker over a 34-table schema with 58 foreign-key relations — and agrees, down to the record.</p><p class="ev"><b>Evidence:</b> REGRESSION RUN CASCADE_ENV (both walkers, 2026-08-10)</p></div><div class="tier"><span class="chip t-proven">Runtime-proven</span></div></div><div class="row" data-tier="proven"><div><h4>SELECT verified against a SQLite oracle</h4><p>Selection, projection, ORDER BY, LIMIT, and COUNT(*) are each checked against an in-process SQLite implementation. Every shipped operator has an external referee.</p><p class="ev"><b>Evidence:</b> SQLSEL_SELECT_V1</p></div><div class="tier"><span class="chip t-proven">Runtime-proven</span></div></div><div class="row" data-tier="chartered"><div><h4>Joins in the house SELECT</h4><p>The set algebra is being built one operator at a time. Joins are a later operator, not a present one.</p><p class="ev"><b>Evidence:</b> —</p></div><div class="tier"><span class="chip t-chartered">Chartered</span></div></div><div class="row" data-tier="proven"><div><h4>Whole-database posture from one file</h4><p>One command captures open areas, attached indexes, selected tag orders, aliases, and declared relations to a plain-text snapshot; one command restores all of it. The standing demonstration restores 43 work areas and 58 relations.</p><p class="ev"><b>Evidence:</b> workspaces/cascade_all.dtschema; CASCADE_ENV §2</p></div><div class="tier"><span class="chip t-proven">Runtime-proven</span></div></div><div class="grp"><h3>Shell</h3></div><div class="row" data-tier="proven"><div><h4>Command surface over work areas</h4><p>Tables, areas, structure inspection, navigation, seeking, filtering, and cursor control.</p><p class="ev"><b>Evidence:</b> Session transcripts; command catalog</p></div><div class="tier"><span class="chip t-proven">Runtime-proven</span></div></div><div class="row" data-tier="beta"><div><h4>Buffered editing and rollback</h4><p>Record locking, dirty and stale state, buffered edits, commit and rollback, and mutation-sensitive commands.</p><p class="ev"><b>Evidence:</b> Session transcripts</p></div><div class="tier"><span class="chip t-beta">Active beta</span></div></div><div class="row" data-tier="beta"><div><h4>Script mode</h4><p>Command files with variables, comments, line continuation, IF/ELSE, LOOP, WHILE, UNTIL, SCAN, and one level of subscript nesting.</p><p class="ev"><b>Evidence:</b> Script language guide</p></div><div class="tier"><span class="chip t-beta">Active beta</span></div></div><div class="row" data-tier="beta"><div><h4>CSV import and export</h4><p>Round-trip between delimited files and DBF tables.</p><p class="ev"><b>Evidence:</b> Command catalog</p></div><div class="tier"><span class="chip t-beta">Active beta</span></div></div><div class="row" data-tier="beta"><div><h4>DDL schema fetch, validate, create</h4><p>Schema surfaces over DBF, with implementation caveats documented rather than smoothed over.</p><p class="ev"><b>Evidence:</b> Command catalog; documented caveats</p></div><div class="tier"><span class="chip t-beta">Active beta</span></div></div><div class="row" data-tier="proven"><div><h4>SQLite as a companion carrier</h4><p>SQLite is compiled in both as a second carrier for teaching systems and as the verification instrument for the house SELECT. Competing with it and using it as referee are the same decision.</p><p class="ev"><b>Evidence:</b> ERP CHECK scorecards; SQLSEL_SELECT_V1</p></div><div class="tier"><span class="chip t-proven">Runtime-proven</span></div></div><div class="grp"><h3>Architecture</h3></div><div class="row" data-tier="source"><div><h4>Separate libraries, separate responsibilities</h4><p>Tables, indexes, memo storage, the expression evaluator, the value system, and the TUI link as distinct libraries under one command host. Every seam is a real compilation boundary, checkable in one build log.</p><p class="ev"><b>Evidence:</b> CMake target list in any build transcript</p></div><div class="tier"><span class="chip t-source">Source-evidenced</span></div></div><div class="row" data-tier="source"><div><h4>Engine core independent of any front end</h4><p>Ordering, cursor state, relations, validation, and command execution live in the engine and the shell, never duplicated in interface code. A front end can be added or removed without the database behaving differently.</p><p class="ev"><b>Evidence:</b> Architecture reference</p></div><div class="tier"><span class="chip t-source">Source-evidenced</span></div></div><div class="grp"><h3>Interfaces</h3></div><div class="row" data-tier="proven"><div><h4>Terminal shell</h4><p>The primary surface, and the one everything else is measured against.</p><p class="ev"><b>Evidence:</b> Session transcripts</p></div><div class="tier"><span class="chip t-proven">Runtime-proven</span></div></div><div class="row" data-tier="beta"><div><h4>TUI workbench</h4><p>A full-screen text interface over the same engine truth.</p><p class="ev"><b>Evidence:</b> Build targets</p></div><div class="tier"><span class="chip t-beta">Active beta</span></div></div><div class="row" data-tier="beta"><div><h4>wxWidgets GUI workbench</h4><p>The C++ desktop lane. Runs, still moving.</p><p class="ev"><b>Evidence:</b> Build targets</p></div><div class="tier"><span class="chip t-beta">Active beta</span></div></div><div class="row" data-tier="chartered"><div><h4>Interface definition language</h4><p>Menus, windows, dialogs, controls, and event handlers described as data. A direction, not current syntax.</p><p class="ev"><b>Evidence:</b> —</p></div><div class="tier"><span class="chip t-chartered">Chartered</span></div></div><div class="grp"><h3>Teaching</h3></div><div class="row" data-tier="beta"><div><h4>Labs and teaching commands</h4><p>Hands-on surfaces for character encoding, index internals, historical data models, and normalization — meant to be watched, not just run.</p><p class="ev"><b>Evidence:</b> Command catalog; curriculum notes</p></div><div class="tier"><span class="chip t-beta">Active beta</span></div></div><div class="row" data-tier="proven"><div><h4>Teaching datasets</h4><p>The same datasets ship in x64, x32, and Visual FoxPro form, plus a reference copy, so a lesson can compare flavors directly.</p><p class="ev"><b>Evidence:</b> Repository datasets</p></div><div class="tier"><span class="chip t-proven">Runtime-proven</span></div></div><div class="row" data-tier="chartered"><div><h4>Lesson modules as portable units</h4><p>A lesson travelling as a self-contained package. Designed; not built.</p><p class="ev"><b>Evidence:</b> —</p></div><div class="tier"><span class="chip t-chartered">Chartered</span></div></div><div class="grp"><h3>Distribution</h3></div><div class="row" data-tier="beta"><div><h4>Cross-platform build</h4><p>Windows and WSL/Linux build lanes are in active use. Recipes are being curated into the public docs.</p><p class="ev"><b>Evidence:</b> CMake and vcpkg metadata</p></div><div class="tier"><span class="chip t-beta">Active beta</span></div></div><div class="row" data-tier="open"><div><h4>Tagged release with binaries</h4><p>No release has been published. Until one is, nothing here can be run by a stranger.</p><p class="ev"><b>Evidence:</b> —</p></div><div class="tier"><span class="chip t-open">Not started</span></div></div><div class="row" data-tier="source"><div><h4>Final license text</h4><p>GPL-3.0-only. The LICENSE file is committed to the development tree.</p><p class="ev"><b>Evidence:</b> commit 2dbc29c8f, 2026-08-11</p></div><div class="tier"><span class="chip t-source">Source-evidenced</span></div></div></div>
+  <div class="legend"><div><span class="chip t-proven">Runtime-proven</span> <span>A transcript or regression shows it.</span></div><div><span class="chip t-source">Source-evidenced</span> <span>The mechanism is confirmed in source; the end-to-end run has not happened.</span></div><div><span class="chip t-beta">Active beta</span> <span>Usable and exercised, still changing.</span></div><div><span class="chip t-chartered">Chartered</span> <span>Designed and registered, not yet built.</span></div><div><span class="chip t-open">Not started</span> <span>Named here so its absence is visible.</span></div></div>
+</div></section>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="mark" style="margin-bottom:12px"><span class="dot"></span>x64base</div>
+        <p class="tag">A 64-bit DBF database engine in C++20, with a command shell you can watch work. Born 1993, rebuilt for 2026.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <a href="../docs/">Documentation</a>
+        <a href="../status/">Status</a>
+        <a href="../downloads/">Downloads</a>
+        <a href="../schemas/">Schemas</a>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <a href="https://github.com/deraldg/x64base">Source on GitHub</a>
+        <a href="https://x64base.com">Working archive</a>
+        <a href="../about/">About &amp; scope</a>
+        <a href="../contact/">Contact</a>
+      </div>
+    </div>
+    <div class="fine">
+      <span>© 1993–2026 Derald R. Grimwood Jr.</span>
+      <span>GPL-3.0-only</span>
+      <span>DBF_64 · FPT64 · indexing · teaching-first</span>
+    </div>
+  </div>
+</footer>
+<script>
+(function(){
+  var btns=document.querySelectorAll('.filters button');
+  var rows=document.querySelectorAll('.board .row');
+  var grps=document.querySelectorAll('.board .grp');
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      var f=b.dataset.f;
+      btns.forEach(function(x){x.setAttribute('aria-pressed', x===b ? 'true':'false');});
+      rows.forEach(function(r){
+        r.style.display = (f==='all'||r.dataset.tier===f) ? '' : 'none';
+      });
+      grps.forEach(function(g){
+        var n=0,el=g.nextElementSibling;
+        while(el && el.classList.contains('row')){ if(el.style.display!=='none') n++; el=el.nextElementSibling; }
+        g.style.display = n ? '' : 'none';
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

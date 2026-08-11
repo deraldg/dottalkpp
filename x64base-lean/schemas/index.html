@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Schemas — x64base</title>
+<meta name="description" content="The 34-table demonstration schema and the teaching datasets, in every DBF flavor.">
+<meta property="og:title" content="Schemas — x64base">
+<meta property="og:description" content="The 34-table demonstration schema and the teaching datasets, in every DBF flavor.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap bar">
+    <a class="mark" href="../"><span class="dot"></span>x64base</a>
+    <nav class="top"><a href="../about/" class="">About</a><a href="../docs/" class="">Documentation</a><a href="../status/" class="">Status</a><a href="../downloads/" class="">Downloads</a><a href="../schemas/" class="on">Schemas</a><a href="../contact/" class="">Contact</a></nav>
+  </div>
+</header>
+<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-11</div></div>
+<main>
+
+<div class="phead"><div class="wrap">
+  <p class="crumb">Home / Schemas</p>
+  <h1>Schemas</h1>
+  <p>The datasets the engine is proved against, and the graph both relation walkers agree on.</p>
+</div></div>
+<section><div class="wrap prose">
+<h2>The demonstration schema</h2>
+<p>A production-shaped ERP schema: <strong>34 tables</strong> joined by <strong>58 foreign-key
+relations</strong>. It is not a toy, and that matters — positional traversal and the house SELECT
+agreeing on a three-table question proves considerably less than agreeing on this one.</p>
+<p><span class="chip t-proven">Runtime-proven</span> The whole thing restores from a single plain-text workspace file: open areas, attached indexes,
+selected tag orders, aliases, and every declared relation.</p>
+
+<h2>Dual carrier</h2>
+<p><span class="chip t-proven">Runtime-proven</span> Teaching schemas ship twice — as x64base tables and as a sealed SQLite copy. The SQLite side is
+the authority for checking, which is what lets a lesson ask "is the engine right?" and get an answer
+rather than an assurance.</p>
+
+<h2>Teaching datasets</h2>
+<table class="t">
+<tr><th>Form</th><th>Purpose</th></tr>
+<tr><td>x64 <code>DBF_64</code></td><td>The current format: 64-bit headers, wide metadata, 64-bit memo identifiers</td></tr>
+<tr><td>Classic x32 DBF</td><td>The MS-DOS-era baseline, for comparison</td></tr>
+<tr><td>Visual FoxPro DBF</td><td>Field and data-type compatibility, including currency types</td></tr>
+<tr><td>Reference copy</td><td>Known-good values for checking a lab's output</td></tr>
+</table>
+<p>Because the same data exists in every flavor, "what changed between generations" is something a
+student can diff rather than take on faith.</p>
+</div></section>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="mark" style="margin-bottom:12px"><span class="dot"></span>x64base</div>
+        <p class="tag">A 64-bit DBF database engine in C++20, with a command shell you can watch work. Born 1993, rebuilt for 2026.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <a href="../docs/">Documentation</a>
+        <a href="../status/">Status</a>
+        <a href="../downloads/">Downloads</a>
+        <a href="../schemas/">Schemas</a>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <a href="https://github.com/deraldg/x64base">Source on GitHub</a>
+        <a href="https://x64base.com">Working archive</a>
+        <a href="../about/">About &amp; scope</a>
+        <a href="../contact/">Contact</a>
+      </div>
+    </div>
+    <div class="fine">
+      <span>© 1993–2026 Derald R. Grimwood Jr.</span>
+      <span>GPL-3.0-only</span>
+      <span>DBF_64 · FPT64 · indexing · teaching-first</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

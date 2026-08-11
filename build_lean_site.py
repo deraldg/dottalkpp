@@ -1013,6 +1013,11 @@ student can diff rather than take on faith.</p>
 A build that fails while following the published instructions counts as a documentation defect and is
 worth reporting as one.</p>
 
+<h2>Email</h2>
+<p>No GitHub account, or something that does not fit an issue? Write to
+<a href="mailto:deraldg@gmail.com">deraldg@gmail.com</a>. Issues are still preferred for anything
+another user might benefit from finding later.</p>
+
 <h2>Teaching use</h2>
 <p>If you want to use x64base in a course, say so in an issue. The teaching material is the part most
 likely to be shaped by someone actually trying to teach with it, and it is currently shaped by one
@@ -1122,51 +1127,87 @@ Dated entries, no ceremony. This file replaces the old News section.
      between evidence tiers, say so here and update the status board in the same commit. -->
 """)
 
-    write("README.md", """# x64base — lean site
+    write("README.md", """# x64base lean site -- dottalkpp.com
 
-The public front door for [x64base](https://github.com/deraldg/x64base). Static HTML, no build
-dependencies, no JavaScript except a 20-line filter on the status board.
+The low-key public entry surface for [x64base](https://github.com/deraldg/x64base).
+Static HTML, no build dependencies, no framework, no JavaScript except a 20-line
+filter on the status board.
 
-## Regenerating
+    Lane    : AIF-107 (low-key-entry-surface), run COWORK-20260811-001
+    Lane doc: D:/code/ccode/docs/maintenance/AIF_107_LOW_KEY_ENTRY_SURFACE_LANE_V1.md
+    Owner   : member.derald    Steward: member.ai.claude.cowork
 
-    python3 build_lean_site.py     # emits ./x64base-lean/
-    python3 check_site.py          # link + vocabulary + metadata check
+## Where it lives
 
-`build_lean_site.py` is the source of truth. **Do not hand-edit files in `x64base-lean/`** — they are
-overwritten on every build. Content lives in the Python data structures at the top of the generator:
-
-| What | Where |
+| Surface | Location |
 | --- | --- |
-| Status board rows | `STATUS` |
-| Evidence tier definitions | `TIERS` |
-| Command families | `FAMILIES` |
-| Navigation | `NAV` |
-| Styling | `CSS` |
-| Page bodies | `home()`, `status()`, `docs()`, `sub_pages()`, `other()` |
+| Live | https://dottalkpp.com |
+| Repo | https://github.com/deraldg/dottalkpp (`main`) |
+| Local working copy | `d:/dev/dottalkpp-lean` |
+| Old Next.js skeleton | branch `archive/nextjs-skeleton-2026-07` |
 
-## Deploying
+Deployment is automatic: every push to `main` runs
+`.github/workflows/deploy-pages.yml`, publishing the repo root to GitHub Pages.
+Live about a minute after push. `CNAME` binds the domain -- do not delete it.
 
-Copy `x64base-lean/` to any static host. No server-side anything. Set the 404 handler to `404.html`.
+## Viewing locally
+
+    # closest to production (pretty URLs like /status/ work):
+    python -m http.server 8080 -d d:/dev/dottalkpp-lean
+    # then open http://localhost:8080/
+
+    # zero setup, straight off disk:
+    start d:/dev/dottalkpp-lean/index.html
+
+## Updating the site
+
+`build_lean_site.py` is the source of truth -- including THIS README, which it
+regenerates on every build. **Never hand-edit the HTML files or this file**;
+edit the generator. Workflow:
+
+    cd d:/dev/dottalkpp-lean
+    python build_lean_site.py        # regenerates into ./x64base-lean/
+    python check_site.py             # link + vocabulary + metadata gate
+    xcopy /e /y x64base-lean\\* .    # copy generated output over repo root
+    git add .
+    git commit -m "what changed"
+    git push origin main
+
+(`git add .` is acceptable in THIS repo only -- single-purpose, single-session.
+Never in the engine tree.)
+
+Content lives in the data structures at the top of the generator: `STATUS`
+(status board rows), `TIERS`, `FAMILIES`, `NAV`, `BASE_URL` (feeds sitemap,
+robots, CNAME), `CSS`, and the page-body functions.
 
 ## Editorial rules
 
-These are what make the site worth reading — keep them.
-
-1. **Every capability claim carries an evidence tier.** Runtime-proven, source-evidenced, active beta,
-   chartered, or not started. Wording gets demoted the day the evidence stops supporting it.
-2. **All growth rates live on `/status/`.** Nowhere else. That page is the differentiator.
-3. **Unstarted work is listed.** An absence you cannot see is a claim by omission.
-4. **No product storefronts.** x64base is one engine with one shell. Command groupings are chapters,
-   not products — nothing gets a card or a nav slot unless it can be downloaded and versioned alone.
-5. **Retired vocabulary stays retired.** `check_site.py` enforces the list. If you need a coined term,
-   it must replace a phrase you would otherwise repeat ten times, and it gets defined on first use.
+1. **Every capability claim carries an evidence tier.** Wording is demoted the
+   day the evidence stops supporting it.
+2. **All growth rates live on `/status/`.** Nowhere else.
+3. **Unstarted work is listed.** An absence you cannot see is a claim by
+   omission.
+4. **No product storefronts.** One engine, one shell; command groupings are
+   chapters, not products.
+5. **Retired vocabulary stays retired.** `check_site.py` enforces the list on
+   every build.
 6. **Six nav items.** Adding a seventh means removing one.
 
-## What deliberately is not here
+## Relationship to the rest of the estate
 
-The methodology material — the co-development system, self-documenting publication chain, and
-documentation organizer — belongs to a separate project and is not part of the engine's front door.
-The full working archive stays where it is; this site never claims to be complete, only current.
+- **x64base.com** -- the working archive: tracking, planning, the full record.
+  Linked from the footer. Untouched by this repo.
+- **Engine truth** lives in `D:/code/ccode`; this site restates it and must
+  never outrun it. Open caveat (lane gate G2): the status board was derived
+  from public `main`, not yet reconciled against `development`.
+- **Domain reorg** (x64base / dottalkpp / derald / dottalk) is explicitly a
+  separate future effort, per owner ruling 2026-08-11.
+
+## History
+
+2026-08-11: deployed to the dottalkpp.com apex (c0fc326); license settled the
+same day (GPL-3.0-only, engine commit 2dbc29c8f) and the site updated to say so
+(097680f). Running record: `CHANGELOG.md`.
 """)
 
 

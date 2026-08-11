@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>About — x64base</title>
+<meta name="description" content="What x64base is, what it is not, and how its evidence tiers work.">
+<meta property="og:title" content="About — x64base">
+<meta property="og:description" content="What x64base is, what it is not, and how its evidence tiers work.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap bar">
+    <a class="mark" href="../"><span class="dot"></span>x64base</a>
+    <nav class="top"><a href="../about/" class="on">About</a><a href="../docs/" class="">Documentation</a><a href="../status/" class="">Status</a><a href="../downloads/" class="">Downloads</a><a href="../schemas/" class="">Schemas</a><a href="../contact/" class="">Contact</a></nav>
+  </div>
+</header>
+<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-11</div></div>
+<main>
+
+<div class="phead"><div class="wrap">
+  <p class="crumb">Home / About</p>
+  <h1>About x64base</h1>
+  <p>A modern 64-bit evolution of the xBase lineage, built to be taught from.</p>
+</div></div>
+<section><div class="wrap prose">
+<h2>What it is</h2>
+<p>x64base is a DBF-family database engine written in modern C++, driven by a command shell. It handles
+tables, records, fields, work areas, indexes, memos, relations, metadata, help, and scripts — and it is
+built so that each of those is a thing you can look at while it works.</p>
+<p>It exists for two reasons. First, DBF data has not gone away, and a 64-bit engine for it that is
+readable rather than sealed is worth having. Second, database fundamentals are taught almost entirely
+through abstraction, and they do not have to be.</p>
+
+<h2>What it is not</h2>
+<p>Stated plainly, so nobody has to infer it:</p>
+<ul class="tick">
+<li>Not a finished commercial database system</li>
+<li>Not a Visual FoxPro clone</li>
+<li>Not a drop-in replacement for Harbour or Alaska Xbase++</li>
+<li>Not unlimited in scale — the 64-bit widening is partial and audited in the open</li>
+<li>Not compatible with every DBF dialect</li>
+<li>Not for sale, and not a hosted service</li>
+<li>Not a learning-management system, and not a student portal</li>
+</ul>
+
+<h2>How claims work here</h2>
+<p>Every capability on this site is labelled with the strength of its evidence, and the labels are
+enforced by demotion: wording changes the day the evidence stops supporting it.</p>
+<div class="legend"><div><span class="chip t-proven">Runtime-proven</span> <span>A transcript or regression shows it.</span></div><div><span class="chip t-source">Source-evidenced</span> <span>The mechanism is confirmed in source; the end-to-end run has not happened.</span></div><div><span class="chip t-beta">Active beta</span> <span>Usable and exercised, still changing.</span></div><div><span class="chip t-chartered">Chartered</span> <span>Designed and registered, not yet built.</span></div><div><span class="chip t-open">Not started</span> <span>Named here so its absence is visible.</span></div></div>
+<p style="margin-top:22px">The <a href="../status/">status board</a> is the only place these live, and
+it includes work that has not been started — because an absence you cannot see is a claim by
+omission.</p>
+
+<h2>Lineage</h2>
+<p>The project has roots in ANSI C xBase work from 1993 and later recovery branches. Those historical
+sources are inventoried separately from the current codebase, with checksums and evidence labels, so
+old code can be studied without being confused for present behavior. Thirty-three years is the reason
+the DBF focus is deliberate rather than nostalgic.</p>
+
+<h2>Author</h2>
+<p>Derald Grimwood. B.S. Management Information Systems; xBase, SAP, and ERP background.</p>
+
+<div class="note"><p><strong>On documentation.</strong> Parts of this site were drafted with AI
+assistance and reviewed against source. That is disclosed rather than hidden, and it does not change
+the evidence rules: a tier is earned by a transcript, a regression, or a line of code — never by
+prose.</p></div>
+
+<p style="margin-top:26px"><em>Preserve the past. Teach the layers. Fix the architecture. Move forward.</em></p>
+</div></section>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="mark" style="margin-bottom:12px"><span class="dot"></span>x64base</div>
+        <p class="tag">A 64-bit DBF database engine in C++20, with a command shell you can watch work. Born 1993, rebuilt for 2026.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <a href="../docs/">Documentation</a>
+        <a href="../status/">Status</a>
+        <a href="../downloads/">Downloads</a>
+        <a href="../schemas/">Schemas</a>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <a href="https://github.com/deraldg/x64base">Source on GitHub</a>
+        <a href="https://x64base.com">Working archive</a>
+        <a href="../about/">About &amp; scope</a>
+        <a href="../contact/">Contact</a>
+      </div>
+    </div>
+    <div class="fine">
+      <span>© 1993–2026 Derald R. Grimwood Jr.</span>
+      <span>GPL-3.0-only</span>
+      <span>DBF_64 · FPT64 · indexing · teaching-first</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
