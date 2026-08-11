@@ -40,12 +40,12 @@ STATUS = [
  ("Storage", "64-bit table headers and geometry", "source",
   "x64 headers carry 64-bit record-count and geometry fields. Some shared runtime paths still have compatibility gates to audit and widen.",
   "DBF_64 reference; capacity matrix"),
- ("Storage", "Payload-agnostic memos", "source",
-  "x64 memos are addressed by 64-bit object identifiers and do not inspect what they store.",
-  "src/memo/memo_ref.cpp"),
+ ("Storage", "Payload-agnostic memos", "proven",
+  "x64 memos do not inspect what they store, and a seeded stress harness now proves it: six chaotic operation patterns, payloads including embedded NUL and high bytes, byte-compared against a shadow model every generation across repeated close/reopen cycles.",
+  "memo_zoo harness: 20,500 generations / 104,044 ops / 4 seeds / 0 divergences, 2026-08-11"),
  ("Storage", "Memo-resident mini-databases", "chartered",
-  "A memo field carrying an entire small database as a teaching payload. Designed on top of the memo layer, not yet run.",
-  "Virtual-workspaces design package, 2026-07-28"),
+  "A memo field carrying an entire small database as a teaching payload. The first increment is now runtime-proven: a whole database posture (43 work areas, 58 relations) saves into a memo field and restores from inside the table, oracle-verified. The full mini-database remains chartered until a database, not a posture, lives in the memo.",
+  "WORKSPACE_MEMO regression, 2026-08-11; virtual-workspaces design package, 2026-07-28"),
 
  ("Indexing", "CDX with an LMDB-backed key store", "proven",
   "The x64-generation index. Attach, rebuild, order, and seek are published seams rather than sealed internals.",
@@ -1109,6 +1109,16 @@ Dated entries, no ceremony. This file replaces the old News section.
 - Lean site deployed to dottalkpp.com (GitHub Pages, commit c0fc326). Lane AIF-107.
 - LICENSE committed: GPL-3.0-only (engine tree, commit 2dbc29c8f). The
   "Final license text" status entry moves from not-started to done.
+- Workspaces now live in memos: a whole database posture (43 areas, 58
+  relations) saves into a memo field of a self-creating catalog table and
+  restores from inside it, byte-compare verified on every save. Registered
+  as the WORKSPACE_MEMO regression.
+- The memo store survived its zoo: a seeded stress harness ran six chaotic
+  operation patterns (mutation, cross-memo overwrites, growth and shedding,
+  duplication, merge-and-retire, erasure; payloads including embedded NUL
+  bytes) against a shadow-model oracle -- 20,500 generations, 104,044
+  operations, four seeds, zero divergences. "Payload-agnostic memos" moves
+  from source-evidenced to runtime-proven.
 
 ## 2026-08-10
 - Both relation walkers — positional traversal and the house SELECT — answered the same question
