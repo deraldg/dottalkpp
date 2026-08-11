@@ -135,9 +135,9 @@ STATUS = [
  ("Distribution", "Tagged release with binaries", "open",
   "No release has been published. Until one is, nothing here can be run by a stranger.",
   "—"),
- ("Distribution", "Final license text", "open",
-  "GPLv3 is the intended license. The LICENSE file has not been committed.",
-  "—"),
+ ("Distribution", "Final license text", "source",
+  "GPL-3.0-only. The LICENSE file is committed to the development tree.",
+  "commit 2dbc29c8f, 2026-08-11"),
 ]
 
 FAMILIES = [
@@ -403,7 +403,7 @@ def shell(title, nav_key, body, desc, depth, script=""):
     <nav class="top">{nav}</nav>
   </div>
 </header>
-<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-10</div></div>
+<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-11</div></div>
 <main>
 {body}
 </main>
@@ -431,7 +431,7 @@ def shell(title, nav_key, body, desc, depth, script=""):
     </div>
     <div class="fine">
       <span>© 1993–2026 Derald R. Grimwood Jr.</span>
-      <span>GPLv3 (license file pending)</span>
+      <span>GPL-3.0-only</span>
       <span>DBF_64 · FPT64 · indexing · teaching-first</span>
     </div>
   </div>
@@ -935,8 +935,8 @@ prose.</p></div>
 </div></div>
 <section><div class="wrap prose">
 <div class="note"><p><strong>No release has been published yet.</strong> {o} There is no binary to
-download and no <code>LICENSE</code> file committed, though GPLv3 is the intended license. Both are
-listed on the <a href="../status/">status board</a> as not started rather than quietly omitted. Until a
+download; that gap is listed on the <a href="../status/">status board</a> as not started rather than
+quietly omitted. The license is settled: <strong>GPL-3.0-only</strong>, committed 2026-08-11. Until a
 release exists, building from source is the only way to run x64base.</p></div>
 
 <h2>Source</h2>
@@ -1100,10 +1100,14 @@ def extras():
 
 Dated entries, no ceremony. This file replaces the old News section.
 
+## 2026-08-11
+- Lean site deployed to dottalkpp.com (GitHub Pages, commit c0fc326). Lane AIF-107.
+- LICENSE committed: GPL-3.0-only (engine tree, commit 2dbc29c8f). The
+  "Final license text" status entry moves from not-started to done.
+
 ## 2026-08-10
 - Both relation walkers — positional traversal and the house SELECT — answered the same question
   over the 34-table, 58-relation demonstration schema and agreed down to the record.
-- Lean site published.
 
 ## 2026-08-05
 - Development tree refresh: new commands, reconciled references, rebuilt help text.
