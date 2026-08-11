@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Command families — x64base</title>
+<meta name="description" content="One shell, grouped by the job each group of commands does.">
+<meta property="og:title" content="Command families — x64base">
+<meta property="og:description" content="One shell, grouped by the job each group of commands does.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap bar">
+    <a class="mark" href="../../"><span class="dot"></span>x64base</a>
+    <nav class="top"><a href="../../about/" class="">About</a><a href="../../docs/" class="on">Documentation</a><a href="../../status/" class="">Status</a><a href="../../downloads/" class="">Downloads</a><a href="../../schemas/" class="">Schemas</a><a href="../../contact/" class="">Contact</a></nav>
+  </div>
+</header>
+<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-10</div></div>
+<main>
+
+<div class="phead"><div class="wrap">
+  <p class="crumb"><a href="../">Documentation</a> / Command families</p>
+  <h1>Command families</h1>
+  <p>One shell, grouped by the job each group of commands does.</p>
+</div></div>
+<section><div class="wrap prose">
+<p>x64base is one engine with one shell. The names below are groupings for readability, not separate
+products — nothing here is downloaded, versioned, or licensed on its own.</p>
+<div class="grid g2" style="margin:26px 0"><div class="card"><h3>Tables and work areas</h3><p class="cmds">USE SELECT AREA DBAREA DBAREAS STRUCT FIELDS</p><p>Open a table into a numbered area, inspect its structure, and move between areas.</p></div><div class="card"><h3>Navigation</h3><p class="cmds">TOP BOTTOM SKIP GOTO RECNO SEEK FIND LOCATE</p><p>Move the cursor by position, by key, or by condition.</p></div><div class="card"><h3>Order and scope</h3><p class="cmds">SET INDEX / ORDER / FILTER / RELATION / TABLE BUFFER</p><p>Choose which index drives the order, restrict what is visible, and declare how tables relate.</p></div><div class="card"><h3>Mutation</h3><p class="cmds">REPLACE CALC CALCWRITE MULTIREP COMMIT ROLLBACK</p><p>Change field values under buffering, then commit or discard.</p></div><div class="card"><h3>Relations and rows</h3><p class="cmds">REL RELATIONS ERSATZ TUPLE TUPEXPORT</p><p>Walk a declared relation graph, project rows, and export them.</p></div><div class="card"><h3>Listing and browsing</h3><p class="cmds">LIST SMARTLIST SMARTBROWSE SB SIMPLEBROWSE</p><p>Read records at the terminal, from a one-line dump to a full browser.</p></div><div class="card"><h3>Query</h3><p class="cmds">SQL SQLITE DDL</p><p>The house SELECT over open work areas, the companion SQLite surface, and schema definition.</p></div><div class="card"><h3>Import and export</h3><p class="cmds">IMPORT EXPORT IMPORTSQL EXPORTSQL COPY</p><p>Move data between DBF, delimited files, and SQLite.</p></div><div class="card"><h3>Help and metadata</h3><p class="cmds">HELP CMDHELP CMDHELPCHK MAINT DDICT MANUAL BBOX</p><p>Ask the running system what it knows about itself, including a checker for help that has drifted.</p></div><div class="card"><h3>Teaching</h3><p class="cmds">ASCII SHELLO RETRO IDX COBOL CODASYL NORMALIZE</p><p>Labs that make a layer visible instead of describing it.</p></div><div class="card"><h3>Utility</h3><p class="cmds">EDIT TEXT IMAGE WEB URL SFTP ZIP PSHELL</p><p>Ordinary conveniences so a session does not have to leave the shell.</p></div></div>
+<p>The shell can also answer questions about itself at runtime: <code>HELP</code> and
+<code>CMDHELP</code> describe commands, <code>DDICT</code> reports metadata, and
+<code>CMDHELPCHK</code> checks help text that has drifted away from the code it documents.</p>
+</div></section>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="mark" style="margin-bottom:12px"><span class="dot"></span>x64base</div>
+        <p class="tag">A 64-bit DBF database engine in C++20, with a command shell you can watch work. Born 1993, rebuilt for 2026.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <a href="../../docs/">Documentation</a>
+        <a href="../../status/">Status</a>
+        <a href="../../downloads/">Downloads</a>
+        <a href="../../schemas/">Schemas</a>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <a href="https://github.com/deraldg/x64base">Source on GitHub</a>
+        <a href="https://x64base.com">Working archive</a>
+        <a href="../../about/">About &amp; scope</a>
+        <a href="../../contact/">Contact</a>
+      </div>
+    </div>
+    <div class="fine">
+      <span>© 1993–2026 Derald R. Grimwood Jr.</span>
+      <span>GPLv3 (license file pending)</span>
+      <span>DBF_64 · FPT64 · indexing · teaching-first</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

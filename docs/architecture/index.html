@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Engine architecture — x64base</title>
+<meta name="description" content="Separate libraries, real compilation boundaries, and a front end that owns nothing.">
+<meta property="og:title" content="Engine architecture — x64base">
+<meta property="og:description" content="Separate libraries, real compilation boundaries, and a front end that owns nothing.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap bar">
+    <a class="mark" href="../../"><span class="dot"></span>x64base</a>
+    <nav class="top"><a href="../../about/" class="">About</a><a href="../../docs/" class="on">Documentation</a><a href="../../status/" class="">Status</a><a href="../../downloads/" class="">Downloads</a><a href="../../schemas/" class="">Schemas</a><a href="../../contact/" class="">Contact</a></nav>
+  </div>
+</header>
+<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-10</div></div>
+<main>
+
+<div class="phead"><div class="wrap">
+  <p class="crumb"><a href="../">Documentation</a> / Engine architecture</p>
+  <h1>Engine architecture</h1>
+  <p>Separate libraries, real compilation boundaries, and a front end that owns nothing.</p>
+</div></div>
+<section><div class="wrap prose">
+<h2>Layers</h2>
+<table class="t">
+<tr><th>Library</th><th>Responsibility</th></tr>
+<tr><td><code>xbase</code></td><td>Table runtime, work-area objects, records, cursor state, field metadata, table flavors</td></tr>
+<tr><td><code>xindex</code></td><td>Index containers, tag and order behavior, backend index work</td></tr>
+<tr><td><code>memo</code></td><td>Memo references, managers, objects, stores, verification</td></tr>
+<tr><td><code>xexpr</code></td><td>Expression evaluation</td></tr>
+<tr><td><code>value</code></td><td>The shell's value system</td></tr>
+<tr><td><code>tui</code></td><td>Full-screen text interface</td></tr>
+</table>
+<p>These are not conceptual layers. Each is a separate link target, and the boundaries between them
+are checkable in a single build log. <span class="chip t-source">Source-evidenced</span></p>
+<h2>The execution chain</h2>
+<pre>main → shell → command registry → one translation unit per command → libraries</pre>
+<h2>The front end owns nothing</h2>
+<p>Ordering, cursor state, relations, validation, and command execution live in the engine and the
+shell. Terminal, text-mode, and desktop surfaces are consumers of that truth, never duplicators of it.
+A front end can be added or removed without the database behaving differently. <span class="chip t-source">Source-evidenced</span></p>
+<h2>The working rule</h2>
+<pre>Conventions suggest.
+Registration declares.
+Metadata records.
+Runtime proves.
+Validators enforce.</pre>
+</div></section>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="mark" style="margin-bottom:12px"><span class="dot"></span>x64base</div>
+        <p class="tag">A 64-bit DBF database engine in C++20, with a command shell you can watch work. Born 1993, rebuilt for 2026.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <a href="../../docs/">Documentation</a>
+        <a href="../../status/">Status</a>
+        <a href="../../downloads/">Downloads</a>
+        <a href="../../schemas/">Schemas</a>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <a href="https://github.com/deraldg/x64base">Source on GitHub</a>
+        <a href="https://x64base.com">Working archive</a>
+        <a href="../../about/">About &amp; scope</a>
+        <a href="../../contact/">Contact</a>
+      </div>
+    </div>
+    <div class="fine">
+      <span>© 1993–2026 Derald R. Grimwood Jr.</span>
+      <span>GPLv3 (license file pending)</span>
+      <span>DBF_64 · FPT64 · indexing · teaching-first</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
