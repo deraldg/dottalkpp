@@ -36,8 +36,9 @@ foreign-key relations and agreed down to the record.</p>
 <code>LIMIT</code>, <code>COUNT(*)</code> — is verified against an in-process SQLite implementation.
 SQLite is compiled in both as a companion carrier and as the referee. Competing with it and testing
 against it are the same decision, made on purpose.</p>
-<p><span class="chip t-chartered">Chartered</span> Joins are a later operator. The set algebra is being built one operator at a time, and each one
-arrives with its oracle check or it does not arrive.</p>
+<p><span class="chip t-chartered">Chartered</span> Reaching a join from a SELECT is a later operator. The set algebra is being built one operator
+at a time, and each one arrives with its oracle check or it does not arrive. Joining itself is not
+missing: the relation engine walks a declared parent and its children into tuples today, three ways.</p>
 <h2>A whole database posture in one file</h2>
 <p><span class="chip t-proven">Runtime-proven</span> One command captures open work areas, attached indexes, selected tag orders, aliases, and
 declared relations into a plain-text snapshot. One command restores all of it. The standing

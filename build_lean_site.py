@@ -73,8 +73,11 @@ STATUS = [
  ("Relations", "SELECT verified against a SQLite oracle", "proven",
   "Selection, projection, ORDER BY, LIMIT, and COUNT(*) are each checked against an in-process SQLite implementation. Every shipped operator has an external referee.",
   "SQLSEL_SELECT_V1"),
- ("Relations", "Joins in the house SELECT", "chartered",
-  "The set algebra is being built one operator at a time. Joins are a later operator, not a present one.",
+ ("Relations", "Joining a parent and its children into tuples", "proven",
+  "REL JOIN walks a declared parent and its children and emits one tuple per combination, with DISTINCT, ALL and a scan limit that reports when it truncates. REL JOIN ONE keeps the historical single-row form and refuses a child chain rather than accepting one it cannot walk.",
+  "REGRESSION RUN RELJOIN (main/rel_join_enum_regression.dts, 12 tests)"),
+ ("Relations", "JOIN as SQL syntax inside the house SELECT", "chartered",
+  "The set algebra is being built one operator at a time, and reaching a join from a SELECT is a later operator. This is a limit of the SQL surface, not of the engine: joining ships three ways above.",
   "—"),
  ("Relations", "Whole-database posture from one file", "proven",
   "One command captures open areas, attached indexes, selected tag orders, aliases, and declared relations to a plain-text snapshot; one command restores all of it. The standing demonstration restores 43 work areas and 58 relations.",
@@ -787,8 +790,9 @@ foreign-key relations and agreed down to the record.</p>
 <code>LIMIT</code>, <code>COUNT(*)</code> — is verified against an in-process SQLite implementation.
 SQLite is compiled in both as a companion carrier and as the referee. Competing with it and testing
 against it are the same decision, made on purpose.</p>
-<p>{ch} Joins are a later operator. The set algebra is being built one operator at a time, and each one
-arrives with its oracle check or it does not arrive.</p>
+<p>{ch} Reaching a join from a SELECT is a later operator. The set algebra is being built one operator
+at a time, and each one arrives with its oracle check or it does not arrive. Joining itself is not
+missing: the relation engine walks a declared parent and its children into tuples today, three ways.</p>
 <h2>A whole database posture in one file</h2>
 <p>{p} One command captures open work areas, attached indexes, selected tag orders, aliases, and
 declared relations into a plain-text snapshot. One command restores all of it. The standing
