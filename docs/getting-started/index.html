@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Getting started — x64base</title>
-<meta name="description" content="Build the engine, open a table, and get an ordered read back.">
+<meta name="description" content="Build the engine, create a table, and query it -- using the same steps the engine&#x27;s own regression runs.">
 <meta property="og:title" content="Getting started — x64base">
-<meta property="og:description" content="Build the engine, open a table, and get an ordered read back.">
+<meta property="og:description" content="Build the engine, create a table, and query it -- using the same steps the engine&#x27;s own regression runs.">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="../../assets/site.css">
 </head>
@@ -17,18 +17,18 @@
     <nav class="top"><a href="../../about/" class="">About</a><a href="../../docs/" class="on">Documentation</a><a href="../../status/" class="">Status</a><a href="../../downloads/" class="">Downloads</a><a href="../../schemas/" class="">Schemas</a><a href="../../contact/" class="">Contact</a></nav>
   </div>
 </header>
-<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-11</div></div>
+<div class="banner"><div class="wrap">active beta -- every claim carries its evidence tier -- facts as of engine <a href="https://github.com/deraldg/x64base/commit/ee1b446e3">ee1b446e3</a>, 2026-09-23</div></div>
 <main>
 
 <div class="phead"><div class="wrap">
   <p class="crumb"><a href="../">Documentation</a> / Getting started</p>
   <h1>Getting started</h1>
-  <p>Build the engine, open a table, and get an ordered read back.</p>
+  <p>Build the engine, create a table, and query it -- using the same steps the engine's own regression runs.</p>
 </div></div>
 <section><div class="wrap prose">
 <h2>Requirements</h2>
 <ul class="plain">
-<li>A C++20 compiler — MSVC on Windows, or GCC/Clang on Linux and WSL</li>
+<li>A C++20 compiler -- MSVC on Windows, or GCC/Clang on Linux and WSL</li>
 <li>CMake 3.21 or newer</li>
 <li>vcpkg, for dependency resolution (manifest is committed)</li>
 </ul>
@@ -38,29 +38,43 @@ cd x64base
 cmake --preset default
 cmake --build --preset default</pre>
 <p>The result is a single command host. The engine libraries link into it; there is no separate
-daemon or service to start.</p>
-<div class="note"><p><strong>Honest status:</strong> the build has been exercised on Windows/MSVC and
-WSL/Ubuntu, but a verified clean-machine recipe is not yet published, and no tagged release exists.
-Both are tracked as <em>not started</em> on the <a href="../../status/">status board</a>. If the build
-fights you, that is a documentation defect and worth reporting.</p></div>
+daemon or service to start. Clean-clone builds of the core pass in GitHub CI on Ubuntu/GCC and
+Windows/MSVC. No tagged release with binaries exists yet -- see the
+<a href="../../status/">status board</a>.</p>
+
 <h2>First session</h2>
-<pre>USE customers
+<p>This builds its own table, so it works on an empty data directory. The lines are taken from
+<code>sqlsel_select_v1_regression.dts</code>, a default-suite spec the engine re-runs on every
+<code>REGRESSION ALL</code>.</p>
+<pre>CREATE X64 SQLSTU (SID N(6,0), LNAME C(12), MAJOR C(4))
+APPEND
+REPLACE SID WITH "1"
+REPLACE LNAME WITH "ADAMS"
+REPLACE MAJOR WITH "CSCI"
+APPEND
+REPLACE SID WITH "2"
+REPLACE LNAME WITH "BAKER"
+REPLACE MAJOR WITH "MATH"
+CLOSE
+USE SQLSTU
 STRUCT
-SET ORDER TO custname
-TOP
-LIST NEXT 10
-</pre>
-<p>Open a table into a work area, look at its structure, choose the index that drives the order,
-go to the first record in that order, and read ten rows. Every one of those is a separate,
-observable step — which is the entire point of the shell.</p>
-<h2>Then try the interesting part</h2>
-<pre>WORKSPACE LOAD cascade_all
-RELATIONS
-SQL SELECT custname, ordertotal FROM orders ORDER BY ordertotal LIMIT 20
-</pre>
-<p>The first command restores an entire posed database — open areas, attached indexes, selected orders,
-aliases, and declared relations — from one plain-text file. The third answers a question over that
-graph using the house SELECT, whose operators are each verified against SQLite.</p>
+LIST</pre>
+<p>Create a 64-bit table, append two records, close it, reopen it into a work area, look at its
+structure, and read it back. Each is a separate, observable step -- which is the point of the
+shell.</p>
+
+<h2>Then query it</h2>
+<pre>SQLSEL SELECT SID,LNAME FROM SQLSTU WHERE MAJOR = "CSCI"
+SQLSEL SELECT SID,LNAME FROM SQLSTU ORDER BY LNAME DESC
+SQLSEL SELECT COUNT(*) FROM SQLSTU</pre>
+<p><code>SQLSEL</code> is the statement surface. The word <code>SQL</code> on its own is reserved
+and runs nothing. Joins, grouping, subqueries, set operations, and INSERT/UPDATE/DELETE use the
+same verb; see <a href="../query/">Query and relations</a>.</p>
+
+<h2>Check it yourself</h2>
+<pre>REGRESSION RUN SQLSEL_SELECT_V1</pre>
+<p>Every runtime-proven claim on this site names a spec like this one. If one fails on your
+machine, that is worth <a href="../../contact/">reporting</a>.</p>
 </div></section>
 
 </main>

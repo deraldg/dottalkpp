@@ -49,9 +49,16 @@ for p in pages:
         else:
             linked.add(os.path.relpath(t, ROOT))
 
-    # regression identifiers are real artifact names, not branding — exempt them
-    low = txt.lower().replace("sqlsel_select_v1", "«regression»")
+    # Brand names are matched CASE-SENSITIVELY: "SQLsel" is the retired product
+    # brand, "SQLSEL" is the engine's command verb and must stay sayable.
+    CASE_SENSITIVE = {"SQLsel"}
+    low = txt.lower()
     for w in BANNED:
+        if w in CASE_SENSITIVE:
+            if w in txt:
+                n = txt.count(w)
+                problems.append("VOCAB  {}  contains '{}' x{}".format(rel, w, n))
+            continue
         if w.lower() in low:
             # count occurrences, report
             n = low.count(w.lower())
@@ -74,4 +81,13 @@ if problems:
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("OK — all internal links resolve, no retired vocabulary, all pages have title/description/h1.")
+print("OK -- all internal links resolve, no retired vocabulary, all pages have title/description/h1.")
+
+# FRESHNESS (advisory, loud by design): the status board restates the engine.
+import json, datetime
+facts = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "engine-facts.json")))
+age = (datetime.date.today() - datetime.date.fromisoformat(facts["engine_date"])).days
+print("FRESHNESS  facts as of engine {} ({}), {} day(s) old".format(facts["engine_sha"], facts["engine_date"], age))
+if age > 30:
+    print("FRESHNESS  WARNING -- older than 30 days. Regenerate engine-facts.json from the engine tree")
+    print("           and re-verify the status board before publishing (AIF-107 G2).")

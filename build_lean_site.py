@@ -26,69 +26,131 @@ NAV = [
 # tiers: proven | source | beta | chartered | open
 # --------------------------------------------------------------------------
 TIERS = {
-    "proven":    ("Runtime-proven",  "A transcript or regression shows it."),
+    "proven":    ("Runtime-proven",  "A regression or transcript shows it. Evidence names the spec and whether it is in the default suite (re-proven on every REGRESSION ALL) or an explicit run."),
     "source":    ("Source-evidenced","The mechanism is confirmed in source; the end-to-end run has not happened."),
     "beta":      ("Active beta",     "Usable and exercised, still changing."),
     "chartered": ("Chartered",       "Designed and registered, not yet built."),
     "open":      ("Not started",     "Named here so its absence is visible."),
 }
 
+# --------------------------------------------------------------------------
+# ENGINE FACTS -- a snapshot of the engine's own regression registry
+# (kRegressionSpecs in src/cli/cmd_regression.cpp, via
+# tools/reports/regression_index.py). Every REGRESSION a status row cites is
+# looked up here; a spec the engine renamed or dropped FAILS THE BUILD rather
+# than shipping a claim with nothing behind it. Refresh by regenerating
+# engine-facts.json from the engine tree -- never hand-edit a spec state.
+# --------------------------------------------------------------------------
+import json as _json
+FACTS = _json.loads(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                      "engine-facts.json"), encoding="utf-8").read())
+ENGINE_SHA = FACTS["engine_sha"]
+ENGINE_DATE = FACTS["engine_date"]
+
+def ev(*specs, extra=None):
+    parts = []
+    for s in specs:
+        state = FACTS["specs"].get(s)
+        if state is None:
+            raise SystemExit("STATUS cites REGRESSION %s, which is not in engine-facts.json "
+                             "(engine %s). The engine renamed or dropped it: re-verify the "
+                             "claim before rebuilding." % (s, ENGINE_SHA))
+        parts.append("%s (%s)" % (s, "default suite" if state == "default" else "explicit run"))
+    out = "REGRESSION " + ", ".join(parts) if parts else ""
+    if extra:
+        out = (out + "; " + extra) if out else extra
+    return out
+
 STATUS = [
  ("Storage", "Three DBF flavors, one binary", "proven",
   "Classic x32 DBF, Visual FoxPro DBF, and the x64 DBF_64 format all open in the same runtime. Flavor is a property of the table, not of the build.",
-  "REGRESSION RUN INDEX_X32 / INDEX_X64; teaching datasets in all three formats"),
- ("Storage", "64-bit table headers and geometry", "source",
-  "x64 headers carry 64-bit record-count and geometry fields. Some shared runtime paths still have compatibility gates to audit and widen.",
+  ev("INDEX_X32", "INDEX_X64", extra="teaching datasets in all three formats")),
+ ("Storage", "Past the classic 16-bit limits", "proven",
+  "x64 tables carry 64-bit record-count and geometry fields, and a canary drives them past the record and header limits the classic format imposed.",
+  ev("X64_METRICS")),
+ ("Storage", "64-bit widening of every shared path", "source",
+  "Not every shared runtime path has been audited and widened yet; the work proceeds path by path.",
   "DBF_64 reference; capacity matrix"),
  ("Storage", "Payload-agnostic memos", "proven",
-  "x64 memos do not inspect what they store, and a seeded stress harness now proves it: six chaotic operation patterns, payloads including embedded NUL and high bytes, byte-compared against a shadow model every generation across repeated close/reopen cycles.",
+  "x64 memos do not inspect what they store, and a seeded stress harness proves it: six chaotic operation patterns, payloads including embedded NUL and high bytes, byte-compared against a shadow model every generation across repeated close/reopen cycles.",
   "memo_zoo harness: 20,500 generations / 104,044 ops / 4 seeds / 0 divergences, 2026-08-11"),
- ("Storage", "Memo-resident mini-databases", "chartered",
-  "A memo field carrying an entire small database as a teaching payload. The first increment is now runtime-proven: a whole database posture (43 work areas, 58 relations) saves into a memo field and restores from inside the table, oracle-verified. The full mini-database remains chartered until a database, not a posture, lives in the memo.",
-  "WORKSPACE_MEMO regression, 2026-08-11; virtual-workspaces design package, 2026-07-28"),
+ ("Storage", "Memo-resident mini-databases", "proven",
+  "WORKSPACE SAVE ... MEMO MINIDB writes a whole small database into a memo container, and a workspace can be restored from it. Mixing it with multiple open workspaces is in the default suite.",
+  ev("WORKSPACE_MINIDB", "MWXSHAKE")),
+ ("Storage", "NULL values", "proven",
+  "A nullable Visual FoxPro column stores, reads, displays, and filters NULL, and every step is graded.",
+  ev("NULLASSERT")),
 
  ("Indexing", "CDX with an LMDB-backed key store", "proven",
-  "The x64-generation index. Attach, rebuild, order, and seek are published seams rather than sealed internals.",
-  "Index regressions; CDX / LMDB reference"),
+  "The x64-generation index. v64 tables take their active order from CDX/LMDB, on a fixture the spec builds itself.",
+  ev("INDEX_X64")),
  ("Indexing", "INX and CNX classic-generation indexes", "proven",
-  "The classic index containers, with flavor-correct ordering behavior.",
-  "REGRESSION RUN INDEX_X32"),
+  "The classic index containers, with flavor-correct ordering and attachment.",
+  ev("INDEX_X32")),
  ("Indexing", "CNX attached to an x64 table", "proven",
   "Cross-generation attachment is policy, not accident: permitted with an advisory, with REINDEX routing correctly and the CDX default unchanged.",
-  "REGRESSION RUN INDEX_X64_CNX"),
+  ev("INDEX_X64_CNX")),
  ("Indexing", "CDX attached to a classic table", "chartered",
   "The mirror direction. Registered, awaiting its proof.",
-  "—"),
+  "-"),
+ ("Indexing", "Index maintenance inside a transaction", "proven",
+  "With SET INDEXTXN, buffered REPLACE and DELETE followed by COMMIT keep the live CDX/LMDB index current with no rebuild.",
+  ev("INDEX_TXN")),
 
  ("Memory", "Whole tables and indexes in RAM", "proven",
-  "An in-process virtual disk hosts complete x64 tables and their native CDX indexes with zero files on disk: built, indexed, traversed in order, then torn down.",
-  "REGRESSION RUN MEM; residency checkpoints in transcript"),
+  "An in-process virtual disk hosts complete x64 tables and their native CDX indexes with zero files on disk; a saved workspace can be hydrated into it.",
+  ev("MEM", "WORKSPACE_RAM")),
 
- ("Relations", "Positional relation traversal", "proven",
-  "Classic SET RELATION navigation, where the parent cursor drives the child, over a declared relation graph.",
-  "REGRESSION RUN CASCADE_ENV"),
- ("Relations", "Set-oriented SELECT over the same graph", "proven",
-  "The house SELECT answers the same question as the positional walker over a 34-table schema with 58 foreign-key relations — and agrees, down to the record.",
-  "REGRESSION RUN CASCADE_ENV (both walkers, 2026-08-10)"),
- ("Relations", "SELECT verified against a SQLite oracle", "proven",
-  "Selection, projection, ORDER BY, LIMIT, and COUNT(*) are each checked against an in-process SQLite implementation. Every shipped operator has an external referee.",
-  "SQLSEL_SELECT_V1"),
- ("Relations", "Joining a parent and its children into tuples", "proven",
+ ("Query", "The SELECT statement surface", "proven",
+  "SQLSEL runs SELECT over open work areas -- selection, projection, WHERE, ORDER BY, LIMIT, COUNT(*) -- and each result set is checked against an in-process SQLite referee.",
+  ev("SQLSEL_SELECT_V1", "EVALDIFF")),
+ ("Query", "Inner, outer, and cross joins", "proven",
+  "INNER, LEFT, RIGHT, FULL, and CROSS joins over open tables, compared with SQLite as multisets. The proofs assert the path the query took as well as the answer.",
+  ev("SQLSEL_INNER_JOIN", "SQLSEL_JOIN_EDGES", "SQLSEL_LEFT_JOIN", "SQLSEL_JOIN_FAMILY")),
+ ("Query", "Self-joins and join chains", "proven",
+  "Self-join aliases over one table, compound ON conditions, and three-table INNER/LEFT chains.",
+  ev("SQLSEL_ADVANCED_JOIN")),
+ ("Query", "GROUP BY, HAVING, and aggregates", "proven",
+  "COUNT, SUM, AVG, MIN, and MAX over single tables and joins, compared with SQLite.",
+  ev("SQLSEL_AGGREGATES")),
+ ("Query", "Subqueries", "proven",
+  "Scalar, IN, NOT IN, EXISTS, and NOT EXISTS subqueries, correlated and uncorrelated, compared with SQLite.",
+  ev("SQLSEL_SUBQUERIES")),
+ ("Query", "DISTINCT and set operations", "proven",
+  "SELECT DISTINCT, UNION, UNION ALL, INTERSECT, and EXCEPT, compared with SQLite.",
+  ev("SQLSEL_SET_OPS")),
+ ("Query", "INSERT, UPDATE, and DELETE", "proven",
+  "Data changes through SQLSEL over the house table buffer and write-ahead log, including changes that span tables in one transaction, compared with SQLite.",
+  ev("SQLSEL_DML")),
+ ("Query", "Parallel read-only scans", "proven",
+  "SET PARALLEL partitions a read-only scan; a differential spec checks the parallel answer against the serial one.",
+  ev("SQLSEL_PARALLEL")),
+ ("Query", "Primary keys", "proven",
+  "SET UNIQUE FIELD ... PRIMARY declares a key, a blank key field is generated on APPEND, and the declaration survives a restart. Enforcement is being extended one write path at a time; the policy spec records which paths hold today.",
+  ev("PKPOLICY", "PKDURABLE", "PKEYS")),
+
+ ("Relations and workspaces", "Positional relation traversal", "proven",
+  "Classic SET RELATION navigation over a declared relation graph, with the relation store scoped to its workspace.",
+  ev("RELSCOPE2", "CASCADE_ENV")),
+ ("Relations and workspaces", "Joining a parent and its children into tuples", "proven",
   "REL JOIN walks a declared parent and its children and emits one tuple per combination, with DISTINCT, ALL and a scan limit that reports when it truncates. REL JOIN ONE keeps the historical single-row form and refuses a child chain rather than accepting one it cannot walk.",
-  "REGRESSION RUN RELJOIN (main/rel_join_enum_regression.dts, 12 tests)"),
- ("Relations", "JOIN as SQL syntax inside the house SELECT", "chartered",
-  "The set algebra is being built one operator at a time, and reaching a join from a SELECT is a later operator. This is a limit of the SQL surface, not of the engine: joining ships three ways above.",
-  "—"),
- ("Relations", "Whole-database posture from one file", "proven",
-  "One command captures open areas, attached indexes, selected tag orders, aliases, and declared relations to a plain-text snapshot; one command restores all of it. The standing demonstration restores 43 work areas and 58 relations.",
-  "workspaces/cascade_all.dtschema; CASCADE_ENV §2"),
+  ev("RELJOIN", extra="main/rel_join_enum_regression.dts, 12 tests")),
+ ("Relations and workspaces", "Two walkers, one answer", "proven",
+  "Positional traversal and the set-oriented SELECT answered the same question over a 34-table schema with 58 foreign-key relations -- and agreed, down to the record.",
+  ev("CASCADE_ENV", extra="both walkers, 2026-08-10")),
+ ("Relations and workspaces", "Whole-database posture from one file", "proven",
+  "WORKSPACE SAVE captures open areas, attached indexes, orders, aliases, and declared relations to a plain-text snapshot; WORKSPACE LOAD restores it. Demonstrated 2026-08-10 on a 43-area, 58-relation schema.",
+  ev("CASCADE_ENV", extra="workspaces/cascade_all.dtschema")),
+ ("Relations and workspaces", "Several workspaces at once", "proven",
+  "Multiple workspaces open side by side, each owning its areas, its path environment, and a scoped CLOSE.",
+  ev("WSMULTI", "WSENV", "WORKSPACE_SCOPE")),
 
  ("Shell", "Command surface over work areas", "proven",
   "Tables, areas, structure inspection, navigation, seeking, filtering, and cursor control.",
-  "Session transcripts; command catalog"),
- ("Shell", "Buffered editing and rollback", "beta",
-  "Record locking, dirty and stale state, buffered edits, commit and rollback, and mutation-sensitive commands.",
-  "Session transcripts"),
+  ev("NONDESTRUCTIVE")),
+ ("Shell", "Buffered editing, commit, and rollback", "proven",
+  "Buffered edits under record locking; COMMIT applies a logged change and ROLLBACK discards one.",
+  ev("WAL_COMMIT_ROLLBACK")),
  ("Shell", "Script mode", "beta",
   "Command files with variables, comments, line continuation, IF/ELSE, LOOP, WHILE, UNTIL, SCAN, and one level of subscript nesting.",
   "Script language guide"),
@@ -98,46 +160,49 @@ STATUS = [
  ("Shell", "DDL schema fetch, validate, create", "beta",
   "Schema surfaces over DBF, with implementation caveats documented rather than smoothed over.",
   "Command catalog; documented caveats"),
+ ("Shell", "Localized command messages", "proven",
+  "Command usage renders in Spanish, French, German, and Italian.",
+  ev("LANGUAGE")),
  ("Shell", "SQLite as a companion carrier", "proven",
-  "SQLite is compiled in both as a second carrier for teaching systems and as the verification instrument for the house SELECT. Competing with it and using it as referee are the same decision.",
-  "ERP CHECK scorecards; SQLSEL_SELECT_V1"),
+  "SQLite is compiled in both as a second carrier and as the referee for the SELECT surface. Competing with it and using it as referee are the same decision.",
+  ev("SQLSEL_SELECT_V1", extra="ERP CHECK scorecards")),
 
  ("Architecture", "Separate libraries, separate responsibilities", "source",
   "Tables, indexes, memo storage, the expression evaluator, the value system, and the TUI link as distinct libraries under one command host. Every seam is a real compilation boundary, checkable in one build log.",
   "CMake target list in any build transcript"),
  ("Architecture", "Engine core independent of any front end", "source",
-  "Ordering, cursor state, relations, validation, and command execution live in the engine and the shell, never duplicated in interface code. A front end can be added or removed without the database behaving differently.",
+  "Ordering, cursor state, relations, validation, and command execution live in the engine and the shell, never duplicated in interface code.",
   "Architecture reference"),
 
  ("Interfaces", "Terminal shell", "proven",
   "The primary surface, and the one everything else is measured against.",
-  "Session transcripts"),
+  ev("NONDESTRUCTIVE")),
  ("Interfaces", "TUI workbench", "beta",
   "A full-screen text interface over the same engine truth.",
   "Build targets"),
  ("Interfaces", "wxWidgets GUI workbench", "beta",
-  "The C++ desktop lane. Runs, still moving.",
+  "The C++ desktop surface. Runs, still moving.",
   "Build targets"),
  ("Interfaces", "Interface definition language", "chartered",
-  "Menus, windows, dialogs, controls, and event handlers described as data. A direction, not current syntax.",
-  "—"),
+  "Menus, windows, dialogs, controls, and event handlers described as data.",
+  "-"),
 
  ("Teaching", "Labs and teaching commands", "beta",
-  "Hands-on surfaces for character encoding, index internals, historical data models, and normalization — meant to be watched, not just run.",
-  "Command catalog; curriculum notes"),
+  "Hands-on surfaces for character encoding, index internals, historical data models, and normalization -- meant to be watched, not just run.",
+  "Command catalog"),
  ("Teaching", "Teaching datasets", "proven",
   "The same datasets ship in x64, x32, and Visual FoxPro form, plus a reference copy, so a lesson can compare flavors directly.",
   "Repository datasets"),
  ("Teaching", "Lesson modules as portable units", "chartered",
   "A lesson travelling as a self-contained package. Designed; not built.",
-  "—"),
+  "-"),
 
- ("Distribution", "Cross-platform build", "beta",
-  "Windows and WSL/Linux build lanes are in active use. Recipes are being curated into the public docs.",
-  "CMake and vcpkg metadata"),
+ ("Distribution", "Cross-platform build", "proven",
+  "Clean-clone builds pass on Ubuntu/GCC and Windows/MSVC in GitHub CI; WSL builds run the same source.",
+  "GitHub CI green at main 78f95ce2c, 2026-08-10 (AIF-104)"),
  ("Distribution", "Tagged release with binaries", "open",
-  "No release has been published. Until one is, nothing here can be run by a stranger.",
-  "—"),
+  "No release has been published (checked 2026-09-23). Until one is, building from source is the only way to run x64base.",
+  "-"),
  ("Distribution", "Final license text", "source",
   "GPL-3.0-only. The LICENSE file is committed to the development tree.",
   "commit 2dbc29c8f, 2026-08-11"),
@@ -148,24 +213,26 @@ FAMILIES = [
   "Open a table into a numbered area, inspect its structure, and move between areas."),
  ("Navigation", "TOP BOTTOM SKIP GOTO RECNO SEEK FIND LOCATE",
   "Move the cursor by position, by key, or by condition."),
- ("Order and scope", "SET INDEX / ORDER / FILTER / RELATION / TABLE BUFFER",
-  "Choose which index drives the order, restrict what is visible, and declare how tables relate."),
+ ("Order and scope", "SET INDEX / ORDER / FILTER / RELATION / PARALLEL / INDEXTXN",
+  "Choose which index drives the order, restrict what is visible, declare how tables relate, and set scan and transaction behavior."),
  ("Mutation", "REPLACE CALC CALCWRITE MULTIREP COMMIT ROLLBACK",
   "Change field values under buffering, then commit or discard."),
- ("Relations and rows", "REL RELATIONS ERSATZ TUPLE TUPEXPORT",
-  "Walk a declared relation graph, project rows, and export them."),
- ("Listing and browsing", "LIST SMARTLIST SMARTBROWSE SB SIMPLEBROWSE",
-  "Read records at the terminal, from a one-line dump to a full browser."),
- ("Query", "SQL SQLITE DDL",
-  "The house SELECT over open work areas, the companion SQLite surface, and schema definition."),
+ ("Relations and rows", "REL RELATIONS ERSATZ TUPLE TUPEXPORT WORKSPACE",
+  "Walk a declared relation graph, project rows, and save or restore a whole workspace."),
+ ("Listing and browsing", "LIST SMARTLIST BROWSE SMARTBROWSER SIMPLEBROWSER",
+  "Read records at the terminal, from a one-line dump to a full browser. SB is a shortcut for SIMPLEBROWSER."),
+ ("Query", "SQLSEL SQLITE DDL",
+  "SQLSEL is the SELECT/INSERT/UPDATE/DELETE statement surface; SQLITE reaches the companion carrier. SQL itself is a reserved word and runs nothing."),
  ("Import and export", "IMPORT EXPORT IMPORTSQL EXPORTSQL COPY",
   "Move data between DBF, delimited files, and SQLite."),
  ("Help and metadata", "HELP CMDHELP CMDHELPCHK MAINT DDICT MANUAL BBOX",
   "Ask the running system what it knows about itself, including a checker for help that has drifted."),
  ("Teaching", "ASCII SHELLO RETRO IDX COBOL CODASYL NORMALIZE",
   "Labs that make a layer visible instead of describing it."),
- ("Utility", "EDIT TEXT IMAGE WEB URL SFTP ZIP PSHELL",
+ ("Utility", "EDIT TEXT IMAGE WEB SFTP ZIP PSHELL",
   "Ordinary conveniences so a session does not have to leave the shell."),
+ ("Verification", "REGRESSION",
+  "Run the engine's own registered proofs -- the same specs this site cites as evidence."),
 ]
 
 # --------------------------------------------------------------------------
@@ -406,7 +473,7 @@ def shell(title, nav_key, body, desc, depth, script=""):
     <nav class="top">{nav}</nav>
   </div>
 </header>
-<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-11</div></div>
+<div class="banner"><div class="wrap">active beta -- every claim carries its evidence tier -- facts as of engine <a href="https://github.com/deraldg/x64base/commit/{esha}">{esha}</a>, {edate}</div></div>
 <main>
 {body}
 </main>
@@ -441,7 +508,7 @@ def shell(title, nav_key, body, desc, depth, script=""):
 </footer>
 {script}
 </body>
-</html>""".format(title=html.escape(title), desc=html.escape(desc), nav=navhtml,
+</html>""".format(esha=ENGINE_SHA, edate=ENGINE_DATE, title=html.escape(title), desc=html.escape(desc), nav=navhtml,
                   body=body, root=root, script=script)
 
 
@@ -547,8 +614,9 @@ def home():
 
 # ------------------------------ STATUS ------------------------------------
 def status():
-    order = ["Storage", "Indexing", "Memory", "Relations", "Shell", "Architecture",
-             "Interfaces", "Teaching", "Distribution"]
+    # Group order is DERIVED from STATUS (first appearance). A hard-coded list
+    # here once dropped every row whose group it did not name -- silently.
+    order = list(dict.fromkeys(r[0] for r in STATUS))
     counts = {}
     for r in STATUS:
         counts[r[2]] = counts.get(r[2], 0) + 1
@@ -565,6 +633,9 @@ def status():
               '<div><h4>{n}</h4><p>{w}</p><p class="ev"><b>Evidence:</b> {e}</p></div>'
               '<div class="tier">{c}</div></div>'.format(t=tier, n=name, w=what, e=ev, c=chip(tier)))
 
+    rendered = sum(1 for b in board if b.startswith('<div class="row"'))
+    if rendered != len(STATUS):
+        raise SystemExit("status board rendered %d of %d STATUS rows" % (rendered, len(STATUS)))
     filt = ['<button data-f="all" aria-pressed="true">Everything ({})</button>'.format(len(STATUS))]
     for k in ["proven", "source", "beta", "chartered", "open"]:
         if counts.get(k):
@@ -644,11 +715,11 @@ def doc_page(slug, title, lead, body_html):
 def sub_pages():
     # getting started
     doc_page("getting-started", "Getting started",
-      "Build the engine, open a table, and get an ordered read back.",
+      "Build the engine, create a table, and query it -- using the same steps the engine's own regression runs.",
       """
 <h2>Requirements</h2>
 <ul class="plain">
-<li>A C++20 compiler — MSVC on Windows, or GCC/Clang on Linux and WSL</li>
+<li>A C++20 compiler -- MSVC on Windows, or GCC/Clang on Linux and WSL</li>
 <li>CMake 3.21 or newer</li>
 <li>vcpkg, for dependency resolution (manifest is committed)</li>
 </ul>
@@ -658,29 +729,43 @@ cd x64base
 cmake --preset default
 cmake --build --preset default</pre>
 <p>The result is a single command host. The engine libraries link into it; there is no separate
-daemon or service to start.</p>
-<div class="note"><p><strong>Honest status:</strong> the build has been exercised on Windows/MSVC and
-WSL/Ubuntu, but a verified clean-machine recipe is not yet published, and no tagged release exists.
-Both are tracked as <em>not started</em> on the <a href="../../status/">status board</a>. If the build
-fights you, that is a documentation defect and worth reporting.</p></div>
+daemon or service to start. Clean-clone builds of the core pass in GitHub CI on Ubuntu/GCC and
+Windows/MSVC. No tagged release with binaries exists yet -- see the
+<a href="../../status/">status board</a>.</p>
+
 <h2>First session</h2>
-<pre>USE customers
+<p>This builds its own table, so it works on an empty data directory. The lines are taken from
+<code>sqlsel_select_v1_regression.dts</code>, a default-suite spec the engine re-runs on every
+<code>REGRESSION ALL</code>.</p>
+<pre>CREATE X64 SQLSTU (SID N(6,0), LNAME C(12), MAJOR C(4))
+APPEND
+REPLACE SID WITH "1"
+REPLACE LNAME WITH "ADAMS"
+REPLACE MAJOR WITH "CSCI"
+APPEND
+REPLACE SID WITH "2"
+REPLACE LNAME WITH "BAKER"
+REPLACE MAJOR WITH "MATH"
+CLOSE
+USE SQLSTU
 STRUCT
-SET ORDER TO custname
-TOP
-LIST NEXT 10
-</pre>
-<p>Open a table into a work area, look at its structure, choose the index that drives the order,
-go to the first record in that order, and read ten rows. Every one of those is a separate,
-observable step — which is the entire point of the shell.</p>
-<h2>Then try the interesting part</h2>
-<pre>WORKSPACE LOAD cascade_all
-RELATIONS
-SQL SELECT custname, ordertotal FROM orders ORDER BY ordertotal LIMIT 20
-</pre>
-<p>The first command restores an entire posed database — open areas, attached indexes, selected orders,
-aliases, and declared relations — from one plain-text file. The third answers a question over that
-graph using the house SELECT, whose operators are each verified against SQLite.</p>
+LIST</pre>
+<p>Create a 64-bit table, append two records, close it, reopen it into a work area, look at its
+structure, and read it back. Each is a separate, observable step -- which is the point of the
+shell.</p>
+
+<h2>Then query it</h2>
+<pre>SQLSEL SELECT SID,LNAME FROM SQLSTU WHERE MAJOR = "CSCI"
+SQLSEL SELECT SID,LNAME FROM SQLSTU ORDER BY LNAME DESC
+SQLSEL SELECT COUNT(*) FROM SQLSTU</pre>
+<p><code>SQLSEL</code> is the statement surface. The word <code>SQL</code> on its own is reserved
+and runs nothing. Joins, grouping, subqueries, set operations, and INSERT/UPDATE/DELETE use the
+same verb; see <a href="../query/">Query and relations</a>.</p>
+
+<h2>Check it yourself</h2>
+<pre>REGRESSION RUN SQLSEL_SELECT_V1</pre>
+<p>Every runtime-proven claim on this site names a spec like this one. If one fails on your
+machine, that is worth <a href="../../contact/">reporting</a>.</p>
 """)
 
     # command families
@@ -748,10 +833,10 @@ audit for true 64-bit record payloads and offsets. x64base does not claim every 
 unlimited. {s}</p></div>
 <h2>Memos</h2>
 <p>{s2} Memo storage is payload-agnostic by design: the memo layer addresses objects by 64-bit
-identifier and does not inspect what they contain. The interesting destination built on that — a memo
-field carrying an entire small database as a teaching payload — is {ch} and stated at exactly that
-tier: designed, not run.</p>
-""".format(c=chip("proven"), s=chip("source"), s2=chip("source"), ch=chip("chartered")))
+identifier and does not inspect what they contain. The destination built on that has landed: {pr}
+<code>WORKSPACE SAVE ... MEMO MINIDB</code> writes an entire small database into a memo container,
+and a workspace can be restored from it.</p>
+""".format(c=chip("proven"), s=chip("source"), s2=chip("source"), pr=chip("proven")))
 
     # indexing
     doc_page("indexing", "Indexing",
@@ -778,27 +863,43 @@ zero files on disk: created, indexed, read back in order, and torn down entirely
 
     # query
     doc_page("query", "Query and relations",
-      "Two walkers over one declared graph, and a SELECT that answers to an external referee.",
+      "One statement surface, checked against SQLite at every step, and two ways to walk a relation graph.",
       """
-<h2>One graph, two consumers</h2>
-<p>{p} A declared relation graph can be walked two entirely different ways. Positional traversal moves
-the child cursor as the parent moves — the classic behavior. The house SELECT returns qualifying rows
-as a set. On 2026-08-10 both walkers answered the same question over a 34-table schema with 58
-foreign-key relations and agreed down to the record.</p>
-<h2>The oracle</h2>
-<p>{p} Every shipped operator of the house SELECT — selection, projection, <code>ORDER BY</code>,
-<code>LIMIT</code>, <code>COUNT(*)</code> — is verified against an in-process SQLite implementation.
-SQLite is compiled in both as a companion carrier and as the referee. Competing with it and testing
-against it are the same decision, made on purpose.</p>
-<p>{ch} Reaching a join from a SELECT is a later operator. The set algebra is being built one operator
-at a time, and each one arrives with its oracle check or it does not arrive. Joining itself is not
-missing: the relation engine walks a declared parent and its children into tuples today, three ways.</p>
+<h2>SQLSEL, and what it covers</h2>
+<p>{p} <code>SQLSEL</code> runs SELECT over open work areas: selection, projection, WHERE,
+ORDER BY, LIMIT, and COUNT(*). The word <code>SQL</code> on its own is reserved and runs nothing.</p>
+<table class="t">
+<tr><th>Capability</th><th>Proof</th></tr>
+<tr><td>SELECT, WHERE, ORDER BY, LIMIT, COUNT(*)</td><td>{p} default suite</td></tr>
+<tr><td>INNER, LEFT, RIGHT, FULL, CROSS joins</td><td>{p} default suite</td></tr>
+<tr><td>Self-joins, compound ON, three-table chains</td><td>{p} explicit run</td></tr>
+<tr><td>GROUP BY, HAVING, COUNT/SUM/AVG/MIN/MAX</td><td>{p} explicit run</td></tr>
+<tr><td>Scalar, IN, EXISTS subqueries, correlated or not</td><td>{p} explicit run</td></tr>
+<tr><td>DISTINCT, UNION, UNION ALL, INTERSECT, EXCEPT</td><td>{p} explicit run</td></tr>
+<tr><td>INSERT, UPDATE, DELETE, cross-table transactions</td><td>{p} explicit run</td></tr>
+<tr><td>SET PARALLEL partitioned read-only scans</td><td>{p} default suite</td></tr>
+</table>
+<p>Default suite means the engine re-proves it on every <code>REGRESSION ALL</code>. Explicit run
+means a registered spec proves it on demand while it waits for soak and review. Spec names are on
+the <a href="../../status/">status board</a>.</p>
+
+<h2>The referee</h2>
+<p>Each of those specs compares SQLSEL's row sets with an in-process SQLite implementation.
+SQLite is compiled in both as a companion carrier and as the referee: competing with it and
+testing against it are the same decision, made on purpose. The join proofs also assert the path
+the query took, not only the answer it returned.</p>
+
+<h2>One graph, two walkers</h2>
+<p>{p} A declared relation graph can be walked positionally -- the child cursor follows the
+parent, classic <code>SET RELATION</code> -- or as a set through SQLSEL. On 2026-08-10 both
+answered the same question over a 34-table schema with 58 foreign-key relations and agreed down to
+the record. The relation store is scoped to its workspace.</p>
+
 <h2>A whole database posture in one file</h2>
-<p>{p} One command captures open work areas, attached indexes, selected tag orders, aliases, and
-declared relations into a plain-text snapshot. One command restores all of it. The standing
-demonstration brings back 43 work areas and 58 relations — an entire posed schema — from a single
-committed file.</p>
-""".format(p=chip("proven"), ch=chip("chartered")))
+<p>{p} <code>WORKSPACE SAVE</code> captures open areas, attached indexes, selected orders,
+aliases, and declared relations into a plain-text snapshot; <code>WORKSPACE LOAD</code> restores
+it. Several workspaces can be open at once, each owning its own areas and environment.</p>
+""".format(p=chip("proven")))
 
     # scripting
     doc_page("scripting", "Script mode",
@@ -814,11 +915,12 @@ covers:</p>
 <li>One level of subscript nesting</li>
 <li>CSV and DBF import/export workflows</li>
 </ul>
-<pre>* rebuild every index in the workspace
-SCAN AREAS
-  REINDEX
-  ? "reindexed: " + ALIAS()
+<pre>USE SQLSTU
+SCAN
+TUPLE *
 ENDSCAN</pre>
+<p>Visit every record in the current area and print it as a tuple. The same loop appears in
+<code>canaries/major_shakedown.dts</code>.</p>
 <div class="note"><p>{ch} A language for describing <em>interfaces</em> — menus, windows, dialogs,
 controls, event handlers — is a direction, not current syntax. Script mode operates on data today.</p></div>
 """.format(b=chip("beta"), ch=chip("chartered")))
@@ -1109,6 +1211,25 @@ def extras():
 
 Dated entries, no ceremony. This file replaces the old News section.
 
+## 2026-09-23
+- Reconciled against engine development ee1b446e3 (AIF-107 G2). Status board
+  rebuilt from the engine's regression registry snapshot (engine-facts.json:
+  84 specs, 32 default suite): 31 of 45 rows runtime-proven.
+- Corrected: joins shipped (INNER/LEFT/RIGHT/FULL/CROSS, default suite) --
+  the board still called them chartered. Added GROUP BY, subqueries, set
+  operations, DML, parallel scans, primary keys, NULLs, transactional index
+  maintenance, multiple workspaces, memo-resident mini-databases.
+- Fixed Getting Started: `SQL SELECT` has been a reserved no-op since
+  2026-09-04; examples now come from a default-suite regression script.
+- Fixed command families: SMARTBROWSE/SIMPLEBROWSE are SMARTBROWSER/
+  SIMPLEBROWSER; SB is a shortcut for SIMPLEBROWSER; URL is not a command.
+  Removed an invented `SCAN AREAS` example and `LIST NEXT`. Rows added by
+  other sessions on 2026-08-11 and 2026-09-03 (memo zoo, REL JOIN, the
+  two-walker agreement) were carried forward, not replaced.
+- New guards: the build fails if a cited spec leaves the registry, or if the
+  status board renders fewer rows than STATUS holds; check_site.py warns when
+  the engine facts are more than 30 days old. Banner shows the engine stamp.
+
 ## 2026-08-11
 - Lean site deployed to dottalkpp.com (GitHub Pages, commit c0fc326). Lane AIF-107.
 - LICENSE committed: GPL-3.0-only (engine tree, commit 2dbc29c8f). The
@@ -1221,7 +1342,11 @@ robots, CNAME), `CSS`, and the page-body functions.
 
 2026-08-11: deployed to the dottalkpp.com apex (c0fc326); license settled the
 same day (GPL-3.0-only, engine commit 2dbc29c8f) and the site updated to say so
-(097680f). Running record: `CHANGELOG.md`.
+(097680f).
+2026-09-23: reconciled against engine ee1b446e3 (AIF-107 G2); facts now come
+from `engine-facts.json`, a snapshot of the engine's regression registry.
+Refresh it from the engine tree whenever the board is updated.
+Running record: `CHANGELOG.md`.
 """)
 
 

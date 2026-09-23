@@ -17,7 +17,7 @@
     <nav class="top"><a href="./about/" class="">About</a><a href="./docs/" class="">Documentation</a><a href="./status/" class="">Status</a><a href="./downloads/" class="">Downloads</a><a href="./schemas/" class="">Schemas</a><a href="./contact/" class="">Contact</a></nav>
   </div>
 </header>
-<div class="banner"><div class="wrap">active beta · every claim carries its evidence tier · updated 2026-08-11</div></div>
+<div class="banner"><div class="wrap">active beta -- every claim carries its evidence tier -- facts as of engine <a href="https://github.com/deraldg/x64base/commit/ee1b446e3">ee1b446e3</a>, 2026-09-23</div></div>
 <main>
 
 <section class="hero"><div class="wrap">
@@ -32,7 +32,7 @@
   </div>
   <div class="motif"></div>
   <div class="stats">
-    <div class="stat"><b>15</b><span>runtime-proven capabilities</span></div>
+    <div class="stat"><b>31</b><span>runtime-proven capabilities</span></div>
     <div class="stat"><b>3</b><span>DBF flavors, one binary</span></div>
     <div class="stat"><b>58</b><span>relations restored from one file</span></div>
     <div class="stat"><b>1993</b><span>lineage start</span></div>
@@ -59,7 +59,7 @@
 
 <section><div class="wrap">
   <div class="sechead"><h2>The command surface</h2><p class="eyebrow">one shell, grouped by job</p></div>
-  <div class="grid g3"><div class="card"><h3>Tables and work areas</h3><p class="cmds">USE SELECT AREA DBAREA DBAREAS STRUCT FIELDS</p><p>Open a table into a numbered area, inspect its structure, and move between areas.</p></div><div class="card"><h3>Navigation</h3><p class="cmds">TOP BOTTOM SKIP GOTO RECNO SEEK FIND LOCATE</p><p>Move the cursor by position, by key, or by condition.</p></div><div class="card"><h3>Order and scope</h3><p class="cmds">SET INDEX / ORDER / FILTER / RELATION / TABLE BUFFER</p><p>Choose which index drives the order, restrict what is visible, and declare how tables relate.</p></div><div class="card"><h3>Mutation</h3><p class="cmds">REPLACE CALC CALCWRITE MULTIREP COMMIT ROLLBACK</p><p>Change field values under buffering, then commit or discard.</p></div><div class="card"><h3>Relations and rows</h3><p class="cmds">REL RELATIONS ERSATZ TUPLE TUPEXPORT</p><p>Walk a declared relation graph, project rows, and export them.</p></div><div class="card"><h3>Listing and browsing</h3><p class="cmds">LIST SMARTLIST SMARTBROWSE SB SIMPLEBROWSE</p><p>Read records at the terminal, from a one-line dump to a full browser.</p></div></div>
+  <div class="grid g3"><div class="card"><h3>Tables and work areas</h3><p class="cmds">USE SELECT AREA DBAREA DBAREAS STRUCT FIELDS</p><p>Open a table into a numbered area, inspect its structure, and move between areas.</p></div><div class="card"><h3>Navigation</h3><p class="cmds">TOP BOTTOM SKIP GOTO RECNO SEEK FIND LOCATE</p><p>Move the cursor by position, by key, or by condition.</p></div><div class="card"><h3>Order and scope</h3><p class="cmds">SET INDEX / ORDER / FILTER / RELATION / PARALLEL / INDEXTXN</p><p>Choose which index drives the order, restrict what is visible, declare how tables relate, and set scan and transaction behavior.</p></div><div class="card"><h3>Mutation</h3><p class="cmds">REPLACE CALC CALCWRITE MULTIREP COMMIT ROLLBACK</p><p>Change field values under buffering, then commit or discard.</p></div><div class="card"><h3>Relations and rows</h3><p class="cmds">REL RELATIONS ERSATZ TUPLE TUPEXPORT WORKSPACE</p><p>Walk a declared relation graph, project rows, and save or restore a whole workspace.</p></div><div class="card"><h3>Listing and browsing</h3><p class="cmds">LIST SMARTLIST BROWSE SMARTBROWSER SIMPLEBROWSER</p><p>Read records at the terminal, from a one-line dump to a full browser. SB is a shortcut for SIMPLEBROWSER.</p></div></div>
   <p style="margin-top:18px"><a href="docs/command-families/">All eleven command families →</a></p>
 </div></section>
 

@@ -78,4 +78,8 @@ robots, CNAME), `CSS`, and the page-body functions.
 
 2026-08-11: deployed to the dottalkpp.com apex (c0fc326); license settled the
 same day (GPL-3.0-only, engine commit 2dbc29c8f) and the site updated to say so
-(097680f). Running record: `CHANGELOG.md`.
+(097680f).
+2026-09-23: reconciled against engine ee1b446e3 (AIF-107 G2); facts now come
+from `engine-facts.json`, a snapshot of the engine's regression registry.
+Refresh it from the engine tree whenever the board is updated.
+Running record: `CHANGELOG.md`.
