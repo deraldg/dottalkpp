@@ -69,8 +69,10 @@ robots, CNAME), `CSS`, and the page-body functions.
 - **x64base.com** -- the working archive: tracking, planning, the full record.
   Linked from the footer. Untouched by this repo.
 - **Engine truth** lives in `D:/code/ccode`; this site restates it and must
-  never outrun it. Open caveat (lane gate G2): the status board was derived
-  from public `main`, not yet reconciled against `development`.
+  never outrun it. The status board cites registered regression specs from
+  `engine-facts.json` (snapshot of `development`); the build fails if a cited
+  spec disappears. It does NOT catch prose that describes a retired surface --
+  check examples against source when the engine retires a verb.
 - **Domain reorg** (x64base / dottalkpp / derald / dottalk) is explicitly a
   separate future effort, per owner ruling 2026-08-11.
 
