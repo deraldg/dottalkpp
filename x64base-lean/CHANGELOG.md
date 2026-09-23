@@ -2,6 +2,13 @@
 
 Dated entries, no ceremony. This file replaces the old News section.
 
+## 2026-09-23 (later)
+- Retirement polarity sweep added to check_site.py: every page is checked
+  against retirements.json and the build fails if one teaches a retired form.
+  Negative-tested: the 0083f82 getting-started page (which taught `SQL SELECT`)
+  is flagged at the exact line. The upstream register missed that form; a local
+  row carries it until adopted upstream.
+
 ## 2026-09-23
 - Reconciled against engine development ee1b446e3 (AIF-107 G2). Status board
   rebuilt from the engine's regression registry snapshot (engine-facts.json:

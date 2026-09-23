@@ -71,8 +71,11 @@ robots, CNAME), `CSS`, and the page-body functions.
 - **Engine truth** lives in `D:/code/ccode`; this site restates it and must
   never outrun it. The status board cites registered regression specs from
   `engine-facts.json` (snapshot of `development`); the build fails if a cited
-  spec disappears. It does NOT catch prose that describes a retired surface --
-  check examples against source when the engine retires a verb.
+  spec disappears. `check_site.py` also sweeps every page against
+  `retirements.json` and fails if a page teaches a retired form (e.g. `SQL
+  SELECT`). That register is copied from x64base-site's draft; when the engine
+  retires another verb, add the row upstream and re-copy. A retirement nobody
+  registered is still invisible -- the sweep is only as good as its register.
 - **Domain reorg** (x64base / dottalkpp / derald / dottalk) is explicitly a
   separate future effort, per owner ruling 2026-08-11.
 

@@ -1211,6 +1211,13 @@ def extras():
 
 Dated entries, no ceremony. This file replaces the old News section.
 
+## 2026-09-23 (later)
+- Retirement polarity sweep added to check_site.py: every page is checked
+  against retirements.json and the build fails if one teaches a retired form.
+  Negative-tested: the 0083f82 getting-started page (which taught `SQL SELECT`)
+  is flagged at the exact line. The upstream register missed that form; a local
+  row carries it until adopted upstream.
+
 ## 2026-09-23
 - Reconciled against engine development ee1b446e3 (AIF-107 G2). Status board
   rebuilt from the engine's regression registry snapshot (engine-facts.json:
@@ -1335,8 +1342,11 @@ robots, CNAME), `CSS`, and the page-body functions.
 - **Engine truth** lives in `D:/code/ccode`; this site restates it and must
   never outrun it. The status board cites registered regression specs from
   `engine-facts.json` (snapshot of `development`); the build fails if a cited
-  spec disappears. It does NOT catch prose that describes a retired surface --
-  check examples against source when the engine retires a verb.
+  spec disappears. `check_site.py` also sweeps every page against
+  `retirements.json` and fails if a page teaches a retired form (e.g. `SQL
+  SELECT`). That register is copied from x64base-site's draft; when the engine
+  retires another verb, add the row upstream and re-copy. A retirement nobody
+  registered is still invisible -- the sweep is only as good as its register.
 - **Domain reorg** (x64base / dottalkpp / derald / dottalk) is explicitly a
   separate future effort, per owner ruling 2026-08-11.
 

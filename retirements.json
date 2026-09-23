@@ -1,0 +1,93 @@
+{
+ "schema_version": 1,
+ "provenance": "Rows sql.verb.scanner and sqlsel.predicate.scanner are copied VERBATIM, along with excuse_markers, from x64base-site scripts/engine-retirements-v1.json (hand-seeded 2026-09-15; an untracked draft of another session when copied on 2026-09-23). Refresh by re-copying that file. Never edit the copied rows here.",
+ "local_rows_note": "Rows marked local_proposed_upstream exist because the copied register measurably missed a retired form: the 0083f82 getting-started page told readers to type `SQL SELECT ...` and the upstream sweep passed it green (measured 2026-09-23). Once upstream adopts the pattern, delete the local row and re-copy.",
+ "excuse_markers": [
+  "retired",
+  "retirement",
+  "reserved",
+  "no longer",
+  "used to be",
+  "until 20",
+  "withdrawn",
+  "was removed",
+  "has been removed",
+  "corrected 20",
+  "this answer called",
+  "this section said",
+  "moved to count",
+  "its behaviour moved"
+ ],
+ "retirements": [
+  {
+   "id": "sql.verb.scanner",
+   "title": "The SQL verb as a predicate scanner",
+   "retired_on": "2026-09-04",
+   "authority": "owner ruling; src/cli/cmd_sql.cpp",
+   "contract_status": "reserved",
+   "replaced_by": "COUNT, COUNT LIST, COUNT VERBOSE",
+   "severity": "flag",
+   "why": "The retired form kept its own idea of which rows were in scope and could disagree with COUNT without saying so.",
+   "patterns": [
+    "SQL\\s+COUNT\\b",
+    "SQL\\s+\\[COUNT\\]",
+    "SQL\\s+(?:ALL|DELETED|VERBOSE)\\b",
+    "`SQL`[^.\\n]{0,80}\\bCOUNT\\b",
+    "\\bSQL\\b[^.\\n]{0,60}\\bexecutes?\\b[^.\\n]{0,30}\\bstatements?\\b"
+   ],
+   "must_flag": [
+    "| `SQL` | A **COUNT** command with `FOR <expr>` and optional `ALL` / `DELETED`. It does not execute SELECT statements; the name is historical. |",
+    "Use SQL COUNT FOR GPA >= 3.0 to count matching rows."
+   ],
+   "must_pass": [
+    "| `SQL` | **A reserved name.** Retired as a scanner on 2026-09-04; it answers with direction to `COUNT` and `SQLSEL`. |"
+   ]
+  },
+  {
+   "id": "sqlsel.predicate.scanner",
+   "title": "The SQLSEL legacy predicate-scan form",
+   "retired_on": "2026-09-09",
+   "authority": "AIF-074, owner ruling; src/cli/cmd_sql_select.cpp:200",
+   "contract_status": "supported (the STATEMENT surface ships; only the predicate form was withdrawn)",
+   "replaced_by": "COUNT FOR <expr>, COUNT LIST, COUNT VERBOSE",
+   "severity": "flag",
+   "why": "Same defect as the SQL verb, one file over: a private deleted-row policy and a hand-rolled walk that consulted the shared selector zero times.",
+   "note": "The published site says 2026-09-10 for this one. The source says 2026-09-09 twice, once in capitals. The source is the authority and the site should be corrected, not this file.",
+   "patterns": [
+    "SQLSEL\\s+\\[COUNT\\]",
+    "SQLSEL\\s+COUNT\\s+FOR\\b",
+    "SQLSEL\\s+(?:ALL|DELETED)\\b",
+    "SQLSEL\\s+FOR\\b"
+   ],
+   "must_flag": [
+    "The legacy predicate-scan form SQLSEL [COUNT] [FOR <expr>] is still accepted."
+   ],
+   "must_pass": [
+    "SQLSEL COUNT FOR <expr> was retired on 2026-09-09; COUNT carries it now."
+   ]
+  },
+  {
+   "id": "sql.verb.select_redirect",
+   "local_proposed_upstream": true,
+   "title": "`SQL SELECT ...` as a way to run a SELECT statement",
+   "retired_on": "2026-09-04",
+   "authority": "src/cli/cmd_sql.cpp -- the SELECT redirect guard (header, line 16) is past tense; print_sql_reserved answers EVERY invocation",
+   "contract_status": "reserved",
+   "replaced_by": "SQLSEL <cols> FROM <table> [WHERE] [ORDER BY] [LIMIT]",
+   "severity": "flag",
+   "why": "Retired with the scanner: the reserved verb gives one message for every invocation, so a page teaching `SQL SELECT` teaches a command that refuses.",
+   "patterns": [
+    "\\bSQL\\s+SELECT\\b"
+   ],
+   "must_flag": [
+    "SQL SELECT custname, ordertotal FROM orders ORDER BY ordertotal LIMIT 20"
+   ],
+   "must_pass": [
+    "`SQLSEL` is the statement surface. The word `SQL` on its own is reserved and runs nothing.",
+    "SQLSEL SELECT SID,LNAME FROM SQLSTU ORDER BY LNAME DESC",
+    "SQLITE SELECT * FROM t"
+   ]
+  }
+ ],
+ "exemptions": []
+}
