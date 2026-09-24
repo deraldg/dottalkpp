@@ -1061,7 +1061,7 @@ Nothing on this page has been through an accessibility review yet, and it says s
 <a href="../status/">status board</a>.</td>
 <td>REVIEW. Plain-text source; not assessed.</td></tr>
 <tr><td>Binary release</td><td>Executable</td><td>None yet</td>
-<td>{o} Not started.</td><td>GAP. Nothing to assess until it exists.</td></tr>
+<td>{o} No tagged release exists.</td><td>GAP. Nothing to assess until it exists.</td></tr>
 <tr><td>License</td><td>Text: GPL-3.0-only</td>
 <td><code>LICENSE</code> in the repository root, engine commit 2dbc29c8f</td>
 <td>{s} Committed 2026-08-11. A license is a file, not a behavior; nothing to run.</td><td>REVIEW. Plain text.</td></tr>
