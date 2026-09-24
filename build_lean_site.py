@@ -726,12 +726,13 @@ def sub_pages():
 <h2>Build</h2>
 <pre>git clone https://github.com/deraldg/x64base
 cd x64base
-cmake --preset default
-cmake --build --preset default</pre>
-<p>The result is a single command host. The engine libraries link into it; there is no separate
-daemon or service to start. Clean-clone builds of the core pass in GitHub CI on Ubuntu/GCC and
-Windows/MSVC. No tagged release with binaries exists yet -- see the
-<a href="../../status/">status board</a>.</p>
+cmake --preset core-vcpkg
+cmake --build --preset core-vcpkg</pre>
+<p>That is the core build GitHub CI runs on every push, on Ubuntu/GCC and Windows/MSVC. It is the lean
+product, without the LMDB index store; the full development presets, and what each needs, are on the
+<a href="../../downloads/">Downloads</a> page. The result is a single command host. The engine libraries
+link into it; there is no separate daemon or service to start. No tagged release with binaries exists
+yet -- see the <a href="../../status/">status board</a>.</p>
 
 <h2>First session</h2>
 <p>This builds its own table, so it works on an empty data directory. The lines are taken from
@@ -1045,29 +1046,66 @@ download; that gap is listed on the <a href="../status/">status board</a> as not
 quietly omitted. The license is settled: <strong>GPL-3.0-only</strong>, committed 2026-08-11. Until a
 release exists, building from source is the only way to run x64base.</p></div>
 
-<h2>Source</h2>
-<pre>git clone https://github.com/deraldg/x64base</pre>
-<p><a href="https://github.com/deraldg/x64base">github.com/deraldg/x64base</a></p>
+<h2>What you can get, and what each one is</h2>
+<p>Every item carries four labels: what it is, where it comes from, how far its evidence goes, and
+whether its accessibility has been reviewed. Accessibility uses the project's own vocabulary:
+<strong>REVIEW</strong> means not yet assessed, <strong>GAP</strong> means a known shortfall.
+Nothing on this page has been through an accessibility review yet, and it says so.</p>
+<table class="t">
+<thead><tr><th scope="col">Item</th><th scope="col">Type</th><th scope="col">Source</th>
+<th scope="col">Proof status</th><th scope="col">Accessibility</th></tr></thead>
+<tbody>
+<tr><td>Engine source</td><td>Git repository: C++20, CMake 3.21+</td>
+<td><a href="https://github.com/deraldg/x64base">deraldg/x64base</a>, branch <code>main</code></td>
+<td>{s} Untagged. No release, no checksum. Capability claims are tiered one by one on the
+<a href="../status/">status board</a>.</td>
+<td>REVIEW. Plain-text source; not assessed.</td></tr>
+<tr><td>Binary release</td><td>Executable</td><td>None yet</td>
+<td>{o} Not started.</td><td>GAP. Nothing to assess until it exists.</td></tr>
+<tr><td>License</td><td>Text: GPL-3.0-only</td>
+<td><code>LICENSE</code> in the repository root, engine commit 2dbc29c8f</td>
+<td>{s} Committed 2026-08-11. A license is a file, not a behavior; nothing to run.</td><td>REVIEW. Plain text.</td></tr>
+<tr><td>Teaching datasets</td><td>DBF tables in x64, x32 and Visual FoxPro form</td>
+<td>The repository, under the host's runtime <code>data/dbf/</code> directory</td>
+<td>{s} Tracked in the repository. The tiers of what runs against them are on the status board.</td>
+<td>REVIEW. Binary tables; no prose description of their contents on this site yet.</td></tr>
+<tr><td>Regression suite</td><td>Scripts plus a registry compiled into the host</td>
+<td><code>src/cli/cmd_regression.cpp</code> and the scripts it names</td>
+<td>{s} {nreg} specs registered, {ndef} in the default suite (engine {esha}). Counted from the registry, not run for this page; each status-board row names the spec that proves it.</td>
+<td>REVIEW. Text transcripts.</td></tr>
+<tr><td>Demonstration workspace</td><td>Workspace posture, 43 areas and 58 relations</td>
+<td>Restored by the regression named at right</td>
+<td>{p} {cascade}</td><td>REVIEW. Not assessed.</td></tr>
+</tbody></table>
 
-<h2>Build</h2>
-<pre>cmake --preset default
-cmake --build --preset default</pre>
-<p>C++20, CMake 3.21+, and vcpkg for dependencies. Exercised on Windows/MSVC and WSL/Ubuntu. See
-<a href="../docs/getting-started/">Getting started</a> for the first session once it builds.</p>
+<h2>Build from source</h2>
+<pre>git clone https://github.com/deraldg/x64base
+cd x64base</pre>
+<p><strong>Core build -- what CI builds on every push</strong>, on Windows/MSVC and Ubuntu/GCC. It is the
+lean product: no LMDB index store, no TUI. It needs <code>VCPKG_INSTALLATION_ROOT</code> pointing at a
+vcpkg checkout; on Ubuntu, CI also installs <code>ninja-build autoconf autoconf-archive automake libtool</code>.</p>
+<pre>cmake --preset core-vcpkg
+cmake --build --preset core-vcpkg
+ctest --preset core-vcpkg</pre>
+<p><strong>Full development build -- what the maintainer runs</strong>, with the LMDB-backed CDX store.
+Windows needs <code>VCPKG_ROOT</code> set; the Linux/WSL preset uses Ninja.</p>
+<pre>cmake --preset pro-md          # Windows, MSVC
+cmake --build --preset pro-md-Release
 
-<h2>What you get</h2>
-<ul class="plain">
-<li>The command host — one executable, with the engine libraries linked in</li>
-<li>Teaching datasets in x64, x32, and Visual FoxPro form, plus a reference copy</li>
-<li>The regression suite that produces the evidence cited across this site</li>
-<li>Workspace snapshots, including the 43-area, 58-relation demonstration schema</li>
-</ul>
+cmake --preset wsl             # Linux / WSL
+cmake --build --preset wsl-Release</pre>
+<p>{s} Every command above is read from <code>CMakePresets.json</code> and <code>.github/workflows/ci.yml</code>
+on <code>main</code>; CI results are public on the repository's Actions tab. This page has not run them
+from a fresh clone, and the system packages the <code>wsl</code> preset expects are not listed yet (GAP).
+See <a href="../docs/getting-started/">Getting started</a> for the first session once it builds.</p>
 
 <h2>External dependencies</h2>
 <p>LMDB backs the CDX key store and SQLite is compiled in as a companion carrier and verification
 oracle. Both stay external libraries rather than being absorbed into the engine.</p>
 </div></section>
-""".format(o=chip("open"))
+""".format(o=chip("open"), s=chip("source"), p=chip("proven"),
+           nreg=FACTS["specs_registered"], ndef=FACTS["specs_default"], esha=ENGINE_SHA,
+           cascade=ev("CASCADE_ENV", "WORKSPACE_MEMO"))
     write("downloads/index.html", shell("Downloads — x64base", "downloads", body,
           "Build x64base from source. No tagged release has shipped yet.", 1))
 
@@ -1210,6 +1248,16 @@ def extras():
     write("CHANGELOG.md", """# Changelog
 
 Dated entries, no ceremony. This file replaces the old News section.
+
+## 2026-09-23 (evening) -- AIF-107 G3
+- Downloads: every obtainable item now carries type, source, proof status and
+  accessibility status (REVIEW = not yet assessed, GAP = known shortfall, per the
+  contributor rules). Nothing has had an accessibility review; the page says so.
+- Build commands corrected on Downloads and Getting started. Both said
+  `cmake --preset default`; no preset of that name exists in CMakePresets.json.
+  Now: `core-vcpkg` (what CI builds on every push) and the full development
+  presets `pro-md` / `wsl`, each labelled with what it needs. Read from the
+  repository, not run from a fresh clone -- labelled source-evidenced.
 
 ## 2026-09-23 (later)
 - Retirement polarity sweep added to check_site.py: every page is checked

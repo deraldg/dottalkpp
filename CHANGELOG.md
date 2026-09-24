@@ -2,6 +2,16 @@
 
 Dated entries, no ceremony. This file replaces the old News section.
 
+## 2026-09-23 (evening) -- AIF-107 G3
+- Downloads: every obtainable item now carries type, source, proof status and
+  accessibility status (REVIEW = not yet assessed, GAP = known shortfall, per the
+  contributor rules). Nothing has had an accessibility review; the page says so.
+- Build commands corrected on Downloads and Getting started. Both said
+  `cmake --preset default`; no preset of that name exists in CMakePresets.json.
+  Now: `core-vcpkg` (what CI builds on every push) and the full development
+  presets `pro-md` / `wsl`, each labelled with what it needs. Read from the
+  repository, not run from a fresh clone -- labelled source-evidenced.
+
 ## 2026-09-23 (later)
 - Retirement polarity sweep added to check_site.py: every page is checked
   against retirements.json and the build fails if one teaches a retired form.

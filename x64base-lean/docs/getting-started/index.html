@@ -35,12 +35,13 @@
 <h2>Build</h2>
 <pre>git clone https://github.com/deraldg/x64base
 cd x64base
-cmake --preset default
-cmake --build --preset default</pre>
-<p>The result is a single command host. The engine libraries link into it; there is no separate
-daemon or service to start. Clean-clone builds of the core pass in GitHub CI on Ubuntu/GCC and
-Windows/MSVC. No tagged release with binaries exists yet -- see the
-<a href="../../status/">status board</a>.</p>
+cmake --preset core-vcpkg
+cmake --build --preset core-vcpkg</pre>
+<p>That is the core build GitHub CI runs on every push, on Ubuntu/GCC and Windows/MSVC. It is the lean
+product, without the LMDB index store; the full development presets, and what each needs, are on the
+<a href="../../downloads/">Downloads</a> page. The result is a single command host. The engine libraries
+link into it; there is no separate daemon or service to start. No tagged release with binaries exists
+yet -- see the <a href="../../status/">status board</a>.</p>
 
 <h2>First session</h2>
 <p>This builds its own table, so it works on an empty data directory. The lines are taken from
